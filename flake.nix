@@ -51,7 +51,7 @@
         email = "damon.oehlman@gmail.com";
         fullName = "Damon Oehlman";
         gitKey = "C339367066473070";
-        gpgSshKey = "CF103CDFB2AB6E46B63E5AC966869EE8910FFF08";
+        gpgSshKey = "DB11504F72933C09A0DAE61E152030B26D2A9973";
         name = "damo";
       };
     };
