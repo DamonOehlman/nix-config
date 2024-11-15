@@ -102,6 +102,7 @@
 
     darwinConfigurations = {
       "defrag-mini" = mkDarwinConfiguration "defrag-mini" "damo";
+      "djo-affectable" = mkDarwinConfiguration "djo-affectable" "damo";
     };
 
     homeConfigurations = {
@@ -109,6 +110,7 @@
       "nabokikh@nabokikh-mac" = mkHomeConfiguration "aarch64-darwin" "nabokikh" "nabokikh-mac";
       "nabokikh@nabokikh-z13" = mkHomeConfiguration "x86_64-linux" "nabokikh" "nabokikh-z13";
       "damo@defrag-mini" = mkHomeConfiguration "aarch64-darwin" "damo" "defrag-mini";
+      "damo@djo-affectable" = mkHomeConfiguration "aarch64-darwin" "damo" "djo-affectable";
     };
 
     overlays = import ./overlays {inherit inputs;};
