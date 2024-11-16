@@ -8,12 +8,12 @@
         live_config_reload = true;
       };
 
-      terminal = {
-        shell.program = "zsh";
-        shell.args = [
+      shell = {
+        program = "zsh";
+        args = [
           "-l"
           "-c"
-          "tmux attach || tmux "
+          "tmux"
         ];
       };
 
