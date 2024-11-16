@@ -4,10 +4,6 @@
     enable = true;
     catppuccin.enable = true;
     settings = {
-      general = {
-        live_config_reload = true;
-      };
-
       shell = {
         program = "zsh";
         args = [
