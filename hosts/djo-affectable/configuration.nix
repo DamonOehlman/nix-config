@@ -84,12 +84,12 @@
         _FXSortFoldersFirst = true;
       };
       dock = {
-        autohide = true;
+        autohide = false;
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
         persistent-apps = [
-          "/Applications/Brave Browser.app"
+          "/Applications/Arc.app"
           "${pkgs.alacritty}/Applications/Alacritty.app"
           "${pkgs.telegram-desktop}/Applications/Telegram.app"
         ];
@@ -155,6 +155,7 @@
     enable = true;
     casks = [
       "aerospace"
+      "sketchybar"
       "anki"
       "brave-browser"
       "dozer"
@@ -163,6 +164,7 @@
     ];
     taps = [
       "nikitabobko/tap"
+      "FelixKratz/formulae"
     ];
     onActivation.cleanup = "zap";
   };

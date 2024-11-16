@@ -37,7 +37,7 @@
   # User configuration
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";
-    home = "/Volumes/user-${userConfig.name}";
+    home = "/Users/${userConfig.name}";
   };
 
   # Add ability to use TouchID for sudo
@@ -100,7 +100,7 @@
         wvous-tr-corner = 1;
       };
       screencapture = {
-        location = "/Volumes/user-${userConfig.name}/Downloads/temp";
+        location = "/Users/${userConfig.name}/Downloads/temp";
         type = "png";
         disable-shadow = true;
       };
@@ -155,6 +155,7 @@
     enable = true;
     casks = [
       "aerospace"
+      "sketchybar"
       "anki"
       "brave-browser"
       "dozer"

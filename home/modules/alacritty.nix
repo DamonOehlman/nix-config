@@ -4,7 +4,7 @@
     enable = true;
     catppuccin.enable = true;
     settings = {
-      shell = {
+      terminal.shell = {
         program = "zsh";
         args = [
           "-l"
