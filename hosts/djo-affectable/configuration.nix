@@ -26,9 +26,9 @@
   # Nix settings
   nix.settings = {
     experimental-features = "nix-command flakes";
-    auto-optimise-store = true;
   };
 
+  nix.optimise.automatic = true;
   nix.package = pkgs.nix;
 
   # Enable Nix daemon
@@ -138,6 +138,8 @@
     telegram-desktop
     terraform
     terragrunt
+    home-manager
+    pass
   ];
 
   # Zsh configuration
@@ -164,6 +166,7 @@
     ];
     onActivation.cleanup = "zap";
   };
+
 
   # Used for backwards compatibility, please read the changelog before changing.
   system.stateVersion = 5;
