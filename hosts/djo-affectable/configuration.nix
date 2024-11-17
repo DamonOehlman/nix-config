@@ -8,7 +8,7 @@
   nix-homebrew = {
     enable = true;
     enableRosetta = false;
-    user = "${userConfig.name}";
+    user = userConfig.name;
     autoMigrate = true;
   };
 
@@ -156,7 +156,6 @@
     enable = true;
     casks = [
       "aerospace"
-      # "FelixKratz/formulae/sketchybar"
       "anki"
       "dozer"
       "obs"
