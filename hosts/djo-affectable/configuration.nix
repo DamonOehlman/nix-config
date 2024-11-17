@@ -160,6 +160,7 @@
       "dozer"
       "obs"
       "raycast"
+      "skiptools/skip/skip"
     ];
     taps = [
       "nikitabobko/tap"
