@@ -1,4 +1,4 @@
-{userConfig, ...}: {
+{userConfig, pkgs, ...}: {
   # Source aerospace config from the home-manager store
   home.file.".aerospace.toml".text = ''
     after-login-command = []
@@ -9,13 +9,13 @@
     # Run Sketchybar together with AeroSpace
     # sketchbar has a built-in detection of already running process,
     # so it won't be run twice on AeroSpace restart
-    after-startup-command = ['exec-and-forget sketchybar']
+    # after-startup-command = ['exec-and-forget sketchybar']
 
-    exec-on-workspace-change = [
-        '/bin/bash',
-        '-c',
-        'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
-    ]
+    # exec-on-workspace-change = [
+    #     '/bin/bash',
+    #     '-c',
+    #     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+    # ]
 
     # Start AeroSpace at login
     start-at-login = true
@@ -91,7 +91,7 @@
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    cmd-enter = 'exec-and-forget /Users/${userConfig.name}/bin/alacritty'
+    cmd-enter = 'exec-and-forget ${pkgs.alacritty}/bin/alacritty'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
