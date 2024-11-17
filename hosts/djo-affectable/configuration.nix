@@ -7,7 +7,7 @@
   # Add nix-homebrew configuration
   nix-homebrew = {
     enable = true;
-    enableRosetta = true;
+    enableRosetta = false;
     user = "${userConfig.name}";
     autoMigrate = true;
   };
@@ -140,6 +140,7 @@
     terragrunt
     home-manager
     pass
+    discord
   ];
 
   # Zsh configuration
@@ -155,16 +156,14 @@
     enable = true;
     casks = [
       "aerospace"
-      "sketchybar"
+      # "FelixKratz/formulae/sketchybar"
       "anki"
-      "brave-browser"
       "dozer"
       "obs"
       "raycast"
     ];
     taps = [
       "nikitabobko/tap"
-      "FelixKratz/formulae"
     ];
     onActivation.cleanup = "zap";
   };
