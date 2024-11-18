@@ -167,6 +167,10 @@
     run = ['move-node-to-workspace 3']
 
     [[on-window-detected]]
+    if.app-id = 'com.microsoft.VSCode'
+    run = ['move-node-to-workspace 2']
+
+    [[on-window-detected]]
     if.app-id = 'com.apple.dt.Xcode'
     run = ['move-node-to-workspace 4']
 

@@ -75,7 +75,8 @@
           userConfig = users.${username};
         };
         modules = [
-          ./hosts/${hostname}/configuration.nix
+          ./hosts/darwin/common.nix
+          ./hosts/darwin/${hostname}/configuration.nix
           home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
         ];

@@ -37,7 +37,7 @@
   # User configuration
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";
-    home = "/Users/${userConfig.name}";
+    home = "/Volumes/user-${userConfig.name}";
   };
 
   # Add ability to use TouchID for sudo
@@ -92,7 +92,7 @@
           "${pkgs.alacritty}/Applications/Alacritty.app"
           "/Applications/Arc.app"
         ];
-        tilesize = 30;
+        tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
         wvous-tl-corner = 1;
@@ -139,6 +139,7 @@
     terragrunt
     home-manager
     pass
+    zed-editor
   ];
 
   # Zsh configuration
@@ -159,7 +160,6 @@
       "obs"
       "raycast"
       "skip"
-      "jetbrains-toolbox"
       "android-platform-tools"
       "android-studio"
       "google-cloud-sdk"
