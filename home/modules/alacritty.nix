@@ -17,6 +17,11 @@
         TERM = "xterm-256color";
       };
 
+      keyboard.bindings = [
+        { key = "C"; mods = "Control|Shift"; action = "Copy"; }
+        { key = "V"; mods = "Control|Shift"; action = "Paste"; }
+      ];
+
       window = {
         decorations =
           if pkgs.stdenv.isDarwin

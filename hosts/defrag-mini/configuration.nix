@@ -84,14 +84,13 @@
         _FXSortFoldersFirst = true;
       };
       dock = {
-        autohide = true;
+        autohide = false;
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
         persistent-apps = [
-          "/Applications/Brave Browser.app"
           "${pkgs.alacritty}/Applications/Alacritty.app"
-          "${pkgs.telegram-desktop}/Applications/Telegram.app"
+          "/Applications/Arc.app"
         ];
         tilesize = 30;
         wvous-bl-corner = 1;
@@ -100,7 +99,7 @@
         wvous-tr-corner = 1;
       };
       screencapture = {
-        location = "/Users/${userConfig.name}/Downloads/temp";
+        location = "/Volumes/user-${userConfig.name}/Downloads/temp";
         type = "png";
         disable-shadow = true;
       };
@@ -155,15 +154,19 @@
     enable = true;
     casks = [
       "aerospace"
-      "sketchybar"
       "anki"
-      "brave-browser"
       "dozer"
       "obs"
       "raycast"
+      "skip"
+      "jetbrains-toolbox"
+      "android-platform-tools"
+      "android-studio"
+      "google-cloud-sdk"
     ];
     taps = [
       "nikitabobko/tap"
+      "skiptools/skip"
     ];
     onActivation.cleanup = "zap";
   };

@@ -168,7 +168,7 @@
 
     [[on-window-detected]]
     if.app-id = 'com.apple.dt.Xcode'
-    run = ['move-node-to-workspace 2']
+    run = ['move-node-to-workspace 4']
 
     [[on-window-detected]]
     if.app-id = 'org.alacritty'
@@ -181,5 +181,9 @@
     [[on-window-detected]]
     if.app-id = 'com.hnc.Discord'
     run = ['move-node-to-workspace 9']
+
+    [[on-window-detected]]
+    if.app-id = 'com.apple.iphonesimulator'
+    run = ['layout floating']
   '';
 }
