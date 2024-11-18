@@ -34,12 +34,6 @@
   # Enable Nix daemon
   services.nix-daemon.enable = true;
 
-  # User configuration
-  users.users.${userConfig.name} = {
-    name = "${userConfig.name}";
-    home = "/Volumes/user-${userConfig.name}";
-  };
-
   # Add ability to use TouchID for sudo
   security.pam.enableSudoTouchIdAuth = true;
 
