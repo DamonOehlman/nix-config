@@ -83,12 +83,18 @@
       };
 
     # Function for Home Manager configuration
-    mkHomeConfiguration = system: username: hostname:
+    mkHomeConfiguration = {
+      system ? "x86_64-linux",
+      username,
+      hostname,
+      homeDirectory ? "/home/${username}",
+    }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {inherit system;};
         extraSpecialArgs = {
           inherit inputs outputs;
           userConfig = users.${username};
+          homeDirectory = homeDirectory;
         };
         modules = [
           ./home/${username}/${hostname}.nix
@@ -107,11 +113,21 @@
     };
 
     homeConfigurations = {
-      "nabokikh@energy" = mkHomeConfiguration "x86_64-linux" "nabokikh" "energy";
-      "nabokikh@nabokikh-mac" = mkHomeConfiguration "aarch64-darwin" "nabokikh" "nabokikh-mac";
-      "nabokikh@nabokikh-z13" = mkHomeConfiguration "x86_64-linux" "nabokikh" "nabokikh-z13";
-      "damo@defrag-mini" = mkHomeConfiguration "aarch64-darwin" "damo" "defrag-mini";
-      "damo@djo-affectable" = mkHomeConfiguration "aarch64-darwin" "damo" "djo-affectable";
+      # "nabokikh@energy" = mkHomeConfiguration { system = "x86_64-linux"; username = "nabokikh";  hostname = "energy"; };
+      # "nabokikh@nabokikh-mac" = mkHomeConfiguration "aarch64-darwin" "nabokikh" "nabokikh-mac";
+      # "nabokikh@nabokikh-z13" = mkHomeConfiguration "x86_64-linux" "nabokikh" "nabokikh-z13";
+      "damo@defrag-mini" = mkHomeConfiguration {
+        system = "aarch64-darwin";
+        username = "damo";
+        hostname = "defrag-mini";
+        homeDirectory = "/Volumes/user-damo";
+      };
+      "damo@djo-affectable" = mkHomeConfiguration {
+        system = "aarch64-darwin";
+        username = "damo";
+        hostname = "djo-affectable";
+        homeDirectory = "/Users/damo";
+      };
     };
 
     overlays = import ./overlays {inherit inputs;};
