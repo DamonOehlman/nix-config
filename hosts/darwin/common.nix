@@ -134,6 +134,7 @@
     home-manager
     pass
     zed-editor
+    vscode
   ];
 
   # Zsh configuration
@@ -151,7 +152,6 @@
       "aerospace"
       "anki"
       "dozer"
-      "obs"
       "raycast"
       "skip"
       "android-platform-tools"
