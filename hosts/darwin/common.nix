@@ -135,6 +135,7 @@
     pass
     zed-editor
     vscode
+    slack
   ];
 
   # Zsh configuration
