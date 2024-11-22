@@ -127,6 +127,9 @@
     nh
     openconnect
     pipenv
+    rustup
+    nixd
+    needle # uber inversion of control swift framework
     ripgrep
     telegram-desktop
     terraform
@@ -136,6 +139,7 @@
     zed-editor
     vscode
     slack
+    discord
   ];
 
   # Zsh configuration
