@@ -1,6 +1,7 @@
 {outputs, ...}: {
   imports = [
     ../modules/alacritty.nix
+    ../modules/kitty.nix
     ../modules/atuin.nix
     ../modules/bat.nix
     ../modules/btop.nix

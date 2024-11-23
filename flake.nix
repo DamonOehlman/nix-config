@@ -46,12 +46,13 @@
 
     # Define user configurations
     users = {
-      nabokikh = {
+      damo = {
         avatar = ./files/avatar/face;
-        email = "alexander.nabokikh@olx.pl";
-        fullName = "Alexander Nabokikh";
-        gitKey = "C5810093";
-        name = "nabokikh";
+        email = "damon.oehlman@gmail.com";
+        fullName = "Damon Oehlman";
+        gitKey = "C339367066473070";
+        gpgSshKey = "DB11504F72933C09A0DAE61E152030B26D2A9973";
+        name = "damo";
       };
     };
 
@@ -74,19 +75,26 @@
           userConfig = users.${username};
         };
         modules = [
-          ./hosts/${hostname}/configuration.nix
+          ./hosts/darwin/common.nix
+          ./hosts/darwin/${hostname}/configuration.nix
           home-manager.darwinModules.home-manager
           nix-homebrew.darwinModules.nix-homebrew
         ];
       };
 
     # Function for Home Manager configuration
-    mkHomeConfiguration = system: username: hostname:
+    mkHomeConfiguration = {
+      system ? "x86_64-linux",
+      username,
+      hostname,
+      homeDirectory ? "/home/${username}",
+    }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {inherit system;};
         extraSpecialArgs = {
           inherit inputs outputs;
           userConfig = users.${username};
+          homeDirectory = homeDirectory;
         };
         modules = [
           ./home/${username}/${hostname}.nix
@@ -100,13 +108,26 @@
     };
 
     darwinConfigurations = {
-      "nabokikh-mac" = mkDarwinConfiguration "nabokikh-mac" "nabokikh";
+      "defrag-mini" = mkDarwinConfiguration "defrag-mini" "damo";
+      "djo-affectable" = mkDarwinConfiguration "djo-affectable" "damo";
     };
 
     homeConfigurations = {
-      "nabokikh@energy" = mkHomeConfiguration "x86_64-linux" "nabokikh" "energy";
-      "nabokikh@nabokikh-mac" = mkHomeConfiguration "aarch64-darwin" "nabokikh" "nabokikh-mac";
-      "nabokikh@nabokikh-z13" = mkHomeConfiguration "x86_64-linux" "nabokikh" "nabokikh-z13";
+      # "nabokikh@energy" = mkHomeConfiguration { system = "x86_64-linux"; username = "nabokikh";  hostname = "energy"; };
+      # "nabokikh@nabokikh-mac" = mkHomeConfiguration "aarch64-darwin" "nabokikh" "nabokikh-mac";
+      # "nabokikh@nabokikh-z13" = mkHomeConfiguration "x86_64-linux" "nabokikh" "nabokikh-z13";
+      "damo@defrag-mini" = mkHomeConfiguration {
+        system = "aarch64-darwin";
+        username = "damo";
+        hostname = "defrag-mini";
+        homeDirectory = "/Volumes/user-damo";
+      };
+      "damo@djo-affectable" = mkHomeConfiguration {
+        system = "aarch64-darwin";
+        username = "damo";
+        hostname = "djo-affectable";
+        homeDirectory = "/Users/damo";
+      };
     };
 
     overlays = import ./overlays {inherit inputs;};

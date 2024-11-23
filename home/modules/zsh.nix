@@ -45,8 +45,8 @@
       ld = "lazydocker";
       lg = "lazygit";
 
-      repo = "cd $HOME/Documents/repositories";
-      temp = "cd $HOME/Downloads/temp";
+      repo = "cd $HOME/code";
+      temp = "cd $HOME/tmp";
 
       v = "nvim";
       vi = "nvim";
@@ -70,9 +70,12 @@
       bindkey '^[[1;5D' backward-word
 
       # open commands in $EDITOR with C-e
-      autoload -z edit-command-line
-      zle -N edit-command-line
-      bindkey "^e" edit-command-line
+      # autoload -z edit-command-line
+      # zle -N edit-command-line
+      # bindkey "^e" edit-command-line
+
+      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      gpgconf --launch gpg-agent
     '';
   };
 
@@ -92,10 +95,11 @@
         symbol = " ";
       };
       golang = {
+        disabled = true;
         symbol = " ";
       };
       kubernetes = {
-        disabled = false;
+        disabled = true;
         style = "bold pink";
         symbol = "󱃾 ";
         format = "[$symbol$context( \($namespace\))]($style)";
@@ -107,15 +111,18 @@
         ];
       };
       lua = {
+        disabled = true;
         symbol = " ";
       };
       package = {
         symbol = " ";
       };
       php = {
+        disabled = true;
         symbol = " ";
       };
       python = {
+        disabled = true;
         symbol = " ";
       };
       terraform = {

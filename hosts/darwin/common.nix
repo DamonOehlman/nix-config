@@ -1,9 +1,4 @@
-{
-  pkgs,
-  outputs,
-  userConfig,
-  ...
-}: {
+{ pkgs, outputs, userConfig, ... }: {
   # Add nix-homebrew configuration
   nix-homebrew = {
     enable = true;
@@ -14,31 +9,19 @@
 
   # Nixpkgs configuration
   nixpkgs = {
-    overlays = [
-      outputs.overlays.stable-packages
-    ];
+    overlays = [ outputs.overlays.stable-packages ];
 
-    config = {
-      allowUnfree = true;
-    };
+    config = { allowUnfree = true; };
   };
 
   # Nix settings
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-    auto-optimise-store = true;
-  };
+  nix.settings = { experimental-features = "nix-command flakes"; };
 
+  nix.optimise.automatic = true;
   nix.package = pkgs.nix;
 
   # Enable Nix daemon
   services.nix-daemon.enable = true;
-
-  # User configuration
-  users.users.${userConfig.name} = {
-    name = "${userConfig.name}";
-    home = "/Users/${userConfig.name}";
-  };
 
   # Add ability to use TouchID for sudo
   security.pam.enableSudoTouchIdAuth = true;
@@ -46,9 +29,7 @@
   # System settings
   system = {
     defaults = {
-      ".GlobalPreferences" = {
-        "com.apple.mouse.scaling" = -1.0;
-      };
+      ".GlobalPreferences" = { "com.apple.mouse.scaling" = -1.0; };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
         ApplePressAndHoldEnabled = false;
@@ -63,9 +44,7 @@
         NSNavPanelExpandedStateForSaveMode = true;
         PMPrintingExpandedStateForPrint = true;
       };
-      LaunchServices = {
-        LSQuarantine = false;
-      };
+      LaunchServices = { LSQuarantine = false; };
       trackpad = {
         TrackpadRightClick = true;
         TrackpadThreeFingerDrag = true;
@@ -84,23 +63,21 @@
         _FXSortFoldersFirst = true;
       };
       dock = {
-        autohide = true;
+        autohide = false;
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
         persistent-apps = [
-          "/Applications/Brave Browser.app"
-          "${pkgs.alacritty}/Applications/Alacritty.app"
-          "${pkgs.telegram-desktop}/Applications/Telegram.app"
+          "/Applications/Arc.app"
         ];
-        tilesize = 30;
+        tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
       };
       screencapture = {
-        location = "/Users/${userConfig.name}/Downloads/temp";
+        location = "/Volumes/user-${userConfig.name}/Downloads/temp";
         type = "png";
         disable-shadow = true;
       };
@@ -109,18 +86,16 @@
       enableKeyMapping = true;
       # swapLeftCtrlAndFn = true;
       # Remap §± to ~
-      userKeyMapping = [
-        {
-          HIDKeyboardModifierMappingDst = 30064771125;
-          HIDKeyboardModifierMappingSrc = 30064771172;
-        }
-      ];
+      userKeyMapping = [{
+        HIDKeyboardModifierMappingDst = 30064771125;
+        HIDKeyboardModifierMappingSrc = 30064771172;
+      }];
     };
   };
 
   # System packages
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [pip virtualenv]))
+    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
     awscli2
     colima
     delta
@@ -134,10 +109,22 @@
     nh
     openconnect
     pipenv
+    rustup
+    nixd
+    nil
+    nixfmt-classic
+    cmake
+    needle # uber inversion of control swift framework
     ripgrep
     telegram-desktop
     terraform
     terragrunt
+    home-manager
+    pass
+    zed-editor
+    vscode
+    slack
+    discord
   ];
 
   # Zsh configuration
@@ -145,7 +132,7 @@
 
   # Fonts configuration
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["Meslo" "JetBrainsMono"];})
+    (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" ]; })
     roboto
   ];
 
@@ -154,14 +141,14 @@
     casks = [
       "aerospace"
       "anki"
-      "brave-browser"
       "dozer"
-      "obs"
       "raycast"
+      "skip"
+      "android-platform-tools"
+      "android-studio"
+      "google-cloud-sdk"
     ];
-    taps = [
-      "nikitabobko/tap"
-    ];
+    taps = [ "nikitabobko/tap" "skiptools/skip" ];
     onActivation.cleanup = "zap";
   };
 

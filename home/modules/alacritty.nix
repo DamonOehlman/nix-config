@@ -4,22 +4,23 @@
     enable = true;
     catppuccin.enable = true;
     settings = {
-      general = {
-        live_config_reload = true;
-      };
-
-      terminal = {
-        shell.program = "zsh";
-        shell.args = [
+      terminal.shell = {
+        program = "zsh";
+        args = [
           "-l"
           "-c"
-          "tmux attach || tmux "
+          "tmux"
         ];
       };
 
       env = {
         TERM = "xterm-256color";
       };
+
+      keyboard.bindings = [
+        { key = "C"; mods = "Control|Shift"; action = "Copy"; }
+        { key = "V"; mods = "Control|Shift"; action = "Paste"; }
+      ];
 
       window = {
         decorations =
