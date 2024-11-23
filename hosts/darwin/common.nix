@@ -113,7 +113,7 @@
     rustup
     nixd
     nil
-    nixfmt
+    nixfmt-rfc-style
     cmake
     needle # uber inversion of control swift framework
     ripgrep
