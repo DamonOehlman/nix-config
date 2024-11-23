@@ -68,7 +68,6 @@
         show-recents = false;
         showhidden = true;
         persistent-apps = [
-          "${pkgs.alacritty}/Applications/Alacritty.app"
           "/Applications/Arc.app"
         ];
         tilesize = 40;
@@ -113,7 +112,7 @@
     rustup
     nixd
     nil
-    nixfmt-rfc-style
+    nixfmt-classic
     cmake
     needle # uber inversion of control swift framework
     ripgrep

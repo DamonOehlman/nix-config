@@ -91,7 +91,7 @@
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    cmd-alt-enter = 'exec-and-forget ${pkgs.alacritty}/bin/alacritty'
+    cmd-alt-enter = 'exec-and-forget ${pkgs.kitty}/bin/kitty'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
