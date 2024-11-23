@@ -187,6 +187,10 @@
     run = ['move-node-to-workspace 9']
 
     [[on-window-detected]]
+    if.app-id = 'com.obsproject.obs-studio'
+    run = 'move-node-to-workspace 4'
+
+    [[on-window-detected]]
     if.app-id = 'com.apple.iphonesimulator'
     run = ['layout floating']
   '';

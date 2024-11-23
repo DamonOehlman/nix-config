@@ -14,11 +14,6 @@
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
-    portalPackage =
-      pkgs.xdg-desktop-portal-wlr
-      // {
-        override = args: pkgs.xdg-desktop-portal-wlr.override (builtins.removeAttrs args ["hyprland"]);
-      };
   };
 
   # Enable security services
@@ -32,8 +27,6 @@
   # Enable Ozone Wayland support in Chromium and Electron based applications
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    XCURSOR_SIZE = "24";
-    XCURSOR_THEME = "Yaru";
     QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
