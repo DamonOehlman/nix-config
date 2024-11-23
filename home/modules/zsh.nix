@@ -95,10 +95,11 @@
         symbol = " ";
       };
       golang = {
+        disabled = true;
         symbol = " ";
       };
       kubernetes = {
-        disabled = false;
+        disabled = true;
         style = "bold pink";
         symbol = "󱃾 ";
         format = "[$symbol$context( \($namespace\))]($style)";
@@ -110,15 +111,18 @@
         ];
       };
       lua = {
+        disabled = true;
         symbol = " ";
       };
       package = {
         symbol = " ";
       };
       php = {
+        disabled = true;
         symbol = " ";
       };
       python = {
+        disabled = true;
         symbol = " ";
       };
       terraform = {

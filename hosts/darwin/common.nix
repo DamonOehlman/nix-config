@@ -1,9 +1,4 @@
-{
-  pkgs,
-  outputs,
-  userConfig,
-  ...
-}: {
+{ pkgs, outputs, userConfig, ... }: {
   # Add nix-homebrew configuration
   nix-homebrew = {
     enable = true;
@@ -14,19 +9,13 @@
 
   # Nixpkgs configuration
   nixpkgs = {
-    overlays = [
-      outputs.overlays.stable-packages
-    ];
+    overlays = [ outputs.overlays.stable-packages ];
 
-    config = {
-      allowUnfree = true;
-    };
+    config = { allowUnfree = true; };
   };
 
   # Nix settings
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-  };
+  nix.settings = { experimental-features = "nix-command flakes"; };
 
   nix.optimise.automatic = true;
   nix.package = pkgs.nix;
@@ -40,9 +29,7 @@
   # System settings
   system = {
     defaults = {
-      ".GlobalPreferences" = {
-        "com.apple.mouse.scaling" = -1.0;
-      };
+      ".GlobalPreferences" = { "com.apple.mouse.scaling" = -1.0; };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
         ApplePressAndHoldEnabled = false;
@@ -57,9 +44,7 @@
         NSNavPanelExpandedStateForSaveMode = true;
         PMPrintingExpandedStateForPrint = true;
       };
-      LaunchServices = {
-        LSQuarantine = false;
-      };
+      LaunchServices = { LSQuarantine = false; };
       trackpad = {
         TrackpadRightClick = true;
         TrackpadThreeFingerDrag = true;
@@ -102,18 +87,16 @@
       enableKeyMapping = true;
       # swapLeftCtrlAndFn = true;
       # Remap §± to ~
-      userKeyMapping = [
-        {
-          HIDKeyboardModifierMappingDst = 30064771125;
-          HIDKeyboardModifierMappingSrc = 30064771172;
-        }
-      ];
+      userKeyMapping = [{
+        HIDKeyboardModifierMappingDst = 30064771125;
+        HIDKeyboardModifierMappingSrc = 30064771172;
+      }];
     };
   };
 
   # System packages
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [pip virtualenv]))
+    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
     awscli2
     colima
     delta
@@ -129,6 +112,9 @@
     pipenv
     rustup
     nixd
+    nil
+    nixfmt
+    cmake
     needle # uber inversion of control swift framework
     ripgrep
     telegram-desktop
@@ -147,7 +133,7 @@
 
   # Fonts configuration
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["Meslo" "JetBrainsMono"];})
+    (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" ]; })
     roboto
   ];
 
@@ -163,13 +149,9 @@
       "android-studio"
       "google-cloud-sdk"
     ];
-    taps = [
-      "nikitabobko/tap"
-      "skiptools/skip"
-    ];
+    taps = [ "nikitabobko/tap" "skiptools/skip" ];
     onActivation.cleanup = "zap";
   };
-
 
   # Used for backwards compatibility, please read the changelog before changing.
   system.stateVersion = 5;
