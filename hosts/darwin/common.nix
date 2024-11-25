@@ -67,9 +67,7 @@
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
-        persistent-apps = [
-          "/Applications/Arc.app"
-        ];
+        persistent-apps = [ "/Applications/Arc.app" ];
         tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
