@@ -1,4 +1,4 @@
-{userConfig, pkgs, ...}: {
+{ pkgs, ... }: {
   # Source aerospace config from the home-manager store
   home.file.".aerospace.toml".text = ''
     after-login-command = []

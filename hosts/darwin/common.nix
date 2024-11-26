@@ -111,6 +111,8 @@
     nixd
     nil
     nixfmt-classic
+    aiken
+    deno
     cmake
     needle # uber inversion of control swift framework
     ripgrep
