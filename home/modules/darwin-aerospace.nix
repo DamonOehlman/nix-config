@@ -171,10 +171,6 @@
     run = ['move-node-to-workspace 2']
 
     [[on-window-detected]]
-    if.app-id = 'com.apple.dt.Xcode'
-    run = ['move-node-to-workspace 4']
-
-    [[on-window-detected]]
     if.app-id = 'org.alacritty'
     run = ['move-node-to-workspace 1']
 
