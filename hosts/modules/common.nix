@@ -1,39 +1,24 @@
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  userConfig,
-  pkgs,
-  ...
-}: {
+{ inputs, outputs, lib, config, userConfig, pkgs, ... }: {
   # Nixpkgs configuration
   nixpkgs = {
-    overlays = [
-      outputs.overlays.stable-packages
-    ];
+    overlays = [ outputs.overlays.stable-packages ];
 
-    config = {
-      allowUnfree = true;
-    };
+    config = { allowUnfree = true; };
   };
 
   # Register flake inputs for nix commands
-  nix.registry = lib.mapAttrs (_: flake: {inherit flake;}) (lib.filterAttrs (_: lib.isType "flake") inputs);
+  nix.registry = lib.mapAttrs (_: flake: { inherit flake; })
+    (lib.filterAttrs (_: lib.isType "flake") inputs);
 
   # Add inputs to legacy channels
-  nix.nixPath = ["/etc/nix/path"];
-  environment.etc =
-    lib.mapAttrs' (name: value: {
-      name = "nix/path/${name}";
-      value.source = value.flake;
-    })
-    config.nix.registry;
+  nix.nixPath = [ "/etc/nix/path" ];
+  environment.etc = lib.mapAttrs' (name: value: {
+    name = "nix/path/${name}";
+    value.source = value.flake;
+  }) config.nix.registry;
 
   # Nix settings
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-  };
+  nix.settings = { experimental-features = "nix-command flakes"; };
 
   nix.optimise.automatic = true;
 
@@ -42,7 +27,7 @@
     # kernelPackages = pkgs.linuxPackages_latest;
     consoleLogLevel = 0;
     initrd.verbose = false;
-    kernelParams = ["quiet" "splash"];
+    kernelParams = [ "quiet" "splash" ];
     loader.efi.canTouchEfiVariables = true;
     loader.systemd-boot.enable = true;
     loader.timeout = 0;
@@ -77,7 +62,7 @@
     enable = true;
     xkb.layout = "pl";
     xkb.variant = "";
-    excludePackages = with pkgs; [xterm];
+    excludePackages = with pkgs; [ xterm ];
     displayManager.gdm.enable = true;
   };
 
@@ -104,7 +89,7 @@
   # User configuration
   users.users.${userConfig.name} = {
     description = userConfig.fullName;
-    extraGroups = ["networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     isNormalUser = true;
     shell = pkgs.zsh;
   };
@@ -129,7 +114,7 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [pip virtualenv]))
+    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
     anki
     awscli2
     brave
@@ -161,6 +146,7 @@
     unzip
     wl-clipboard
     zoom-us
+    kitty
   ];
 
   # Docker configuration
@@ -173,7 +159,7 @@
 
   # Fonts configuration
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["Meslo" "JetBrainsMono"];})
+    (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" ]; })
     roboto
   ];
 
