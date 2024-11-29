@@ -125,7 +125,7 @@
           homeDirectory = "/Users/damo";
         };
 
-        "damo@steamdeck" = mkHomeConfiguration {
+        "damo@djo-steamdeck" = mkHomeConfiguration {
           username = "damo";
           hostname = "djo-steamdeck";
         };
