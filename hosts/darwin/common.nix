@@ -105,6 +105,7 @@
     kubectl
     lazydocker
     nh
+    caligula
     openconnect
     pipenv
     rustup
