@@ -117,6 +117,8 @@
     (python3.withPackages (ps: with ps; [ pip virtualenv ]))
     anki
     awscli2
+    git
+    vim
     brave
     delta
     dig
