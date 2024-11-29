@@ -126,10 +126,8 @@
         };
 
         "damo@steamdeck" = mkHomeConfiguration {
-          system = "x86_64-linux";
           username = "damo";
           hostname = "djo-steamdeck";
-          homeDirectory = "/home/damo";
         };
       };
 
