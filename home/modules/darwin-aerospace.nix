@@ -1,4 +1,4 @@
-{userConfig, pkgs, ...}: {
+{ pkgs, ... }: {
   # Source aerospace config from the home-manager store
   home.file.".aerospace.toml".text = ''
     after-login-command = []
@@ -169,10 +169,6 @@
     [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace 2']
-
-    [[on-window-detected]]
-    if.app-id = 'com.apple.dt.Xcode'
-    run = ['move-node-to-workspace 4']
 
     [[on-window-detected]]
     if.app-id = 'org.alacritty'

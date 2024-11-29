@@ -67,9 +67,7 @@
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
-        persistent-apps = [
-          "/Applications/Arc.app"
-        ];
+        persistent-apps = [ "/Applications/Arc.app" ];
         tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
@@ -107,12 +105,15 @@
     kubectl
     lazydocker
     nh
+    caligula
     openconnect
     pipenv
     rustup
     nixd
     nil
     nixfmt-classic
+    aiken
+    deno
     cmake
     needle # uber inversion of control swift framework
     ripgrep

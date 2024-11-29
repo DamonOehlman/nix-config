@@ -1,4 +1,4 @@
-{outputs, ...}: {
+{ outputs, ... }: {
   imports = [
     ../modules/alacritty.nix
     ../modules/kitty.nix
@@ -18,22 +18,19 @@
     ../modules/scripts.nix
     ../modules/tmux.nix
     ../modules/zsh.nix
+    ../modules/vscode.nix
+    ../modules/zeditor.nix
   ];
 
   # Nixpkgs configuration
   nixpkgs = {
-    overlays = [
-      outputs.overlays.stable-packages
-    ];
-
-    config = {
-      allowUnfree = true;
-    };
+    overlays = [ outputs.overlays.stable-packages ];
+    config = { allowUnfree = true; };
   };
 
   # Catpuccin flavor and accent
   catppuccin = {
-    flavor = "macchiato";
-    accent = "lavender";
+    flavor = "frappe";
+    accent = "sapphire";
   };
 }
