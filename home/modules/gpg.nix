@@ -37,6 +37,6 @@
     sshKeys = [
       "${userConfig.gpgSshKey}"
     ];
-    # pinentryPackage = pkgs.pinentry-gnome3;
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
 }
