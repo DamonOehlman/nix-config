@@ -1,4 +1,4 @@
-{pkgs, userConfig, ...}: {
+{ pkgs, userConfig, ... }: {
   # Install gpg via home-manager module
   programs.gpg = {
     enable = true;
@@ -34,12 +34,8 @@
     enable = true;
     defaultCacheTtl = 86400;
     enableSshSupport = true;
-    sshKeys = [
-      "${userConfig.gpgSshKey}"
-    ];
-    pinentryPackage = if pkgs.stdenv.isDarwin
-      then pkgs.pinentry-mac
-      else pkgs.pinentry-tty;
-    # pinentryPackage = pkgs.pinentry-gnome3;
+    sshKeys = [ "${userConfig.gpgSshKey}" ];
+    pinentryPackage =
+      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-tty;
   };
 }
