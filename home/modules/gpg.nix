@@ -37,6 +37,9 @@
     sshKeys = [
       "${userConfig.gpgSshKey}"
     ];
+    pinentryPackage = if pkgs.stdenv.isDarwin
+      then pkgs.pinentry-mac
+      else pkgs.pinentry-tty;
     # pinentryPackage = pkgs.pinentry-gnome3;
   };
 }
