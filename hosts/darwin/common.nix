@@ -92,41 +92,7 @@
   };
 
   # System packages
-  environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
-    awscli2
-    colima
-    delta
-    docker
-    du-dust
-    eza
-    fd
-    jq
-    kubectl
-    lazydocker
-    nh
-    caligula
-    openconnect
-    pipenv
-    rustup
-    nixd
-    nil
-    nixfmt-classic
-    aiken
-    deno
-    cmake
-    needle # uber inversion of control swift framework
-    ripgrep
-    telegram-desktop
-    terraform
-    terragrunt
-    home-manager
-    pass
-    zed-editor
-    vscode
-    slack
-    discord
-  ];
+  environment.systemPackages = with pkgs; [ colima docker ];
 
   # Zsh configuration
   programs.zsh.enable = true;

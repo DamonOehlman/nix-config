@@ -75,6 +75,7 @@
           };
           modules = [
             ./hosts/darwin/common.nix
+            ./hosts/modules/cross-platform-packages.nix
             ./hosts/darwin/${hostname}/configuration.nix
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew

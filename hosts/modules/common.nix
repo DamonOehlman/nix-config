@@ -114,43 +114,11 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
-    anki
-    awscli2
-    git
-    vim
-    brave
-    delta
-    dig
-    docker-compose
-    du-dust
-    eza
-    fd
-    gcc
-    glib
-    gnumake
-    jq
-    killall
-    kubectl
-    lazydocker
     mesa
-    nh
-    obs-studio
-    openconnect
     pavucontrol
-    pipenv
     pulseaudio
     qt6.qtwayland
-    ripgrep
-    telegram-desktop
-    terraform
-    terragrunt
-    unzip
     wl-clipboard
-    zoom-us
-    kitty
-    zed-editor
-    pass
   ];
 
   # Docker configuration
