@@ -74,8 +74,8 @@
             userConfig = users.${username};
           };
           modules = [
-            ./hosts/darwin/common.nix
-            ./hosts/modules/cross-platform-packages.nix
+            ./hosts/modules/common.nix
+            ./hosts/modules/common-darwin.nix
             ./hosts/darwin/${hostname}/configuration.nix
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew

@@ -1,9 +1,4 @@
-{
-  pkgs,
-  outputs,
-  userConfig,
-  ...
-}: {
+{ userConfig, ... }: {
   # User configuration
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";

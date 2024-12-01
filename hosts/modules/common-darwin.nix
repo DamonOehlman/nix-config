@@ -10,14 +10,10 @@
   # Nixpkgs configuration
   nixpkgs = {
     overlays = [ outputs.overlays.stable-packages ];
-
     config = { allowUnfree = true; };
   };
 
   # Nix settings
-  nix.settings = { experimental-features = "nix-command flakes"; };
-
-  nix.optimise.automatic = true;
   nix.package = pkgs.nix;
 
   # Enable Nix daemon
@@ -93,17 +89,6 @@
 
   # System packages
   environment.systemPackages = with pkgs; [ colima docker ];
-
-  # Zsh configuration
-  programs.zsh.enable = true;
-
-  # Fonts configuration
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.zed-mono
-    nerd-fonts.meslo-lg
-    roboto
-  ];
 
   homebrew = {
     enable = true;
