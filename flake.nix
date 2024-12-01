@@ -101,6 +101,7 @@
         energy = mkNixosConfiguration "energy" "nabokikh";
         nabokikh-z13 = mkNixosConfiguration "nabokikh-z13" "nabokikh";
         djo-steamdeck = mkNixosConfiguration "djo-steamdeck" "damo";
+        djo-x270 = mkNixosConfiguration "djo-x270" "damo";
       };
 
       darwinConfigurations = {
@@ -128,6 +129,11 @@
         "damo@djo-steamdeck" = mkHomeConfiguration {
           username = "damo";
           hostname = "djo-steamdeck";
+        };
+
+        "damo@djo-x270" = mkHomeConfiguration {
+          username = "damo";
+          hostname = "djo-x270";
         };
       };
 
