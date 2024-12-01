@@ -149,6 +149,8 @@
     wl-clipboard
     zoom-us
     kitty
+    zed-editor
+    pass
   ];
 
   # Docker configuration
