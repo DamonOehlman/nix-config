@@ -88,7 +88,11 @@
   };
 
   # System packages
-  environment.systemPackages = with pkgs; [ colima docker ];
+  environment.systemPackages = with pkgs; [
+    colima
+    docker
+    needle # uber ioc framework for ios apps
+  ];
 
   homebrew = {
     enable = true;

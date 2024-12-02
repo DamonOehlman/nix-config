@@ -21,7 +21,6 @@
     rustup
     deno
     aiken
-    needle # uber inversion of control swift framework
 
     # development general
     gcc
