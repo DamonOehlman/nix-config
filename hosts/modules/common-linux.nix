@@ -109,6 +109,7 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
+    brave
     mesa
     pavucontrol
     pulseaudio
