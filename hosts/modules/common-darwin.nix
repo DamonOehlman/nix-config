@@ -10,14 +10,10 @@
   # Nixpkgs configuration
   nixpkgs = {
     overlays = [ outputs.overlays.stable-packages ];
-
     config = { allowUnfree = true; };
   };
 
   # Nix settings
-  nix.settings = { experimental-features = "nix-command flakes"; };
-
-  nix.optimise.automatic = true;
   nix.package = pkgs.nix;
 
   # Enable Nix daemon
@@ -93,50 +89,9 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
-    awscli2
     colima
-    delta
     docker
-    du-dust
-    eza
-    fd
-    jq
-    kubectl
-    lazydocker
-    nh
-    caligula
-    openconnect
-    pipenv
-    rustup
-    nixd
-    nil
-    nixfmt-classic
-    aiken
-    deno
-    cmake
-    needle # uber inversion of control swift framework
-    ripgrep
-    telegram-desktop
-    terraform
-    terragrunt
-    home-manager
-    pass
-    zed-editor
-    vscode
-    slack
-    discord
-  ];
-
-  # Zsh configuration
-  programs.zsh.enable = true;
-
-  # Fonts configuration
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.zed-mono
-    nerd-fonts.meslo-lg
-    roboto
+    needle # uber ioc framework for ios apps
   ];
 
   homebrew = {

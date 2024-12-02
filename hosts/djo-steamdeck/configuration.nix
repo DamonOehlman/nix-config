@@ -6,6 +6,7 @@
 
     ./hardware-configuration.nix
     ../modules/common.nix
+    ../modules/common-linux.nix
     ../modules/hyprland.nix
     ../modules/steam.nix
   ];
