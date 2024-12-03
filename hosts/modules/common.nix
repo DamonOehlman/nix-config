@@ -26,6 +26,7 @@
     gcc
     glib
     gnumake
+    binserve
 
     # terminal
     kitty
