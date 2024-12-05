@@ -36,6 +36,6 @@
     enableSshSupport = true;
     sshKeys = [ "${userConfig.gpgSshKey}" ];
     pinentryPackage =
-      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-tty;
+      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-curses;
   };
 }
