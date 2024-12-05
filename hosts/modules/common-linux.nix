@@ -109,6 +109,8 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
+    gcc
+    glib
     brave
     mesa
     pavucontrol

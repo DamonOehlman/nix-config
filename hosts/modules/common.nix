@@ -23,8 +23,6 @@
     aiken
 
     # development general
-    gcc
-    glib
     gnumake
 
     # terminal
