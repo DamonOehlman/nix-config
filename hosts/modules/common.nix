@@ -20,6 +20,7 @@
     pipenv
     rustup
     deno
+    nodejs_22
     aiken
 
     # development general
