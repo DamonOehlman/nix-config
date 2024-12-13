@@ -20,10 +20,12 @@
     pipenv
     rustup
     deno
+    nodejs_22
     aiken
 
     # development general
     gnumake
+    binserve
 
     # terminal
     kitty
