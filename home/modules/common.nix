@@ -13,6 +13,7 @@
     ../modules/home.nix
     ../modules/krew.nix
     ../modules/lang-deno.nix
+    ../modules/lang-rust.nix
     ../modules/lazygit.nix
     ../modules/neovim.nix
     ../modules/saml2aws.nix
