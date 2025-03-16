@@ -7,6 +7,9 @@
   # Enable home-manager
   programs.home-manager.enable = true;
 
+  # support backups
+  # programs.home-manager.backupFileExtension = "backup";
+
   # Ensure homebrew is in the PATH
   home.sessionPath = [
     "/opt/homebrew/bin/"

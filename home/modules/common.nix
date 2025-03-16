@@ -22,6 +22,7 @@
     ../modules/zsh.nix
     ../modules/vscode.nix
     ../modules/zeditor.nix
+    ../modules/catppuccin.nix
   ];
 
   # Nixpkgs configuration
