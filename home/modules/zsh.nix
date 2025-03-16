@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   # Zsh shell configuration
   programs.zsh = {
     enable = true;
@@ -81,19 +81,12 @@
 
   programs.starship = {
     enable = true;
-    catppuccin.enable = true;
     enableZshIntegration = true;
     settings = {
       add_newline = false;
-      directory = {
-        style = "bold lavender";
-      };
-      aws = {
-        disabled = true;
-      };
-      docker_context = {
-        symbol = " ";
-      };
+      directory = { style = "bold lavender"; };
+      aws = { disabled = true; };
+      docker_context = { symbol = " "; };
       golang = {
         disabled = true;
         symbol = " ";
@@ -102,21 +95,18 @@
         disabled = true;
         style = "bold pink";
         symbol = "󱃾 ";
-        format = "[$symbol$context( \($namespace\))]($style)";
-        contexts = [
-          {
-            context_pattern = "arn:aws:eks:(?P<var_region>.*):(?P<var_account>[0-9]{12}):cluster/(?P<var_cluster>.*)";
-            context_alias = "$var_cluster";
-          }
-        ];
+        format = "[$symbol$context( ($namespace))]($style)";
+        contexts = [{
+          context_pattern =
+            "arn:aws:eks:(?P<var_region>.*):(?P<var_account>[0-9]{12}):cluster/(?P<var_cluster>.*)";
+          context_alias = "$var_cluster";
+        }];
       };
       lua = {
         disabled = true;
         symbol = " ";
       };
-      package = {
-        symbol = " ";
-      };
+      package = { symbol = " "; };
       php = {
         disabled = true;
         symbol = " ";
@@ -125,9 +115,7 @@
         disabled = true;
         symbol = " ";
       };
-      terraform = {
-        symbol = " ";
-      };
+      terraform = { symbol = " "; };
       right_format = "$kubernetes";
     };
   };

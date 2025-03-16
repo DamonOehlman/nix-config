@@ -1,32 +1,30 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   # Install alacritty via home-manager module
   programs.alacritty = {
     enable = true;
-    catppuccin.enable = true;
     settings = {
       terminal.shell = {
         program = "zsh";
-        args = [
-          "-l"
-          "-c"
-          "tmux"
-        ];
+        args = [ "-l" "-c" "tmux" ];
       };
 
-      env = {
-        TERM = "xterm-256color";
-      };
+      env = { TERM = "xterm-256color"; };
 
       keyboard.bindings = [
-        { key = "C"; mods = "Control|Shift"; action = "Copy"; }
-        { key = "V"; mods = "Control|Shift"; action = "Paste"; }
+        {
+          key = "C";
+          mods = "Control|Shift";
+          action = "Copy";
+        }
+        {
+          key = "V";
+          mods = "Control|Shift";
+          action = "Paste";
+        }
       ];
 
       window = {
-        decorations =
-          if pkgs.stdenv.isDarwin
-          then "buttonless"
-          else "none";
+        decorations = if pkgs.stdenv.isDarwin then "buttonless" else "none";
         dynamic_title = false;
         dynamic_padding = true;
         dimensions = {
@@ -45,10 +43,7 @@
       };
 
       font = {
-        size =
-          if pkgs.stdenv.isDarwin
-          then 15
-          else 12;
+        size = if pkgs.stdenv.isDarwin then 15 else 12;
         normal = {
           family = "MesloLGS Nerd Font";
           style = "Regular";

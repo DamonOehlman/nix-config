@@ -30,10 +30,4 @@
     overlays = [ outputs.overlays.stable-packages ];
     config = { allowUnfree = true; };
   };
-
-  # Catpuccin flavor and accent
-  catppuccin = {
-    flavor = "frappe";
-    accent = "sapphire";
-  };
 }
