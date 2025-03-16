@@ -13,9 +13,6 @@
     config = { allowUnfree = true; };
   };
 
-  # required due to lix install method
-  nix.enable = false;
-
   # Nix settings
   nix.package = pkgs.nix;
 
