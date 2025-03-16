@@ -16,11 +16,11 @@
   # Nix settings
   nix.package = pkgs.nix;
 
-  # Enable Nix daemon
-  services.nix-daemon.enable = true;
+  # Enable Nix daemon (disabled in latest update)
+  # services.nix-daemon.enable = true;
 
   # Add ability to use TouchID for sudo
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # System settings
   system = {
