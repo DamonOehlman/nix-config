@@ -90,8 +90,9 @@
   # System packages
   environment.systemPackages = with pkgs; [
     colima
-    docker
-    needle # uber ioc framework for ios apps
+    pinentry_mac
+    # docker
+    # needle # uber ioc framework for ios apps
   ];
 
   homebrew = {
@@ -102,8 +103,8 @@
       "dozer"
       "raycast"
       "skip"
-      "android-platform-tools"
-      "android-studio"
+      # "android-platform-tools"
+      # "android-studio"
       "google-cloud-sdk"
     ];
     taps = [ "nikitabobko/tap" "skiptools/skip" ];

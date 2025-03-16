@@ -35,7 +35,7 @@
     defaultCacheTtl = 86400;
     enableSshSupport = true;
     sshKeys = [ "${userConfig.gpgSshKey}" ];
-    pinentryPackage =
-      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-tty;
+    # pinentryFlavour = "curses";
+    pinentryPackage = pkgs.pinentry_mac;
   };
 }
