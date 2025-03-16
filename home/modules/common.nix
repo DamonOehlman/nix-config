@@ -11,7 +11,7 @@
     ../modules/go.nix
     ../modules/gpg.nix
     ../modules/home.nix
-    ../modules/krew.nix
+    # ../modules/krew.nix
     ../modules/lang-deno.nix
     ../modules/lang-rust.nix
     ../modules/lazygit.nix
