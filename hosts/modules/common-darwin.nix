@@ -16,11 +16,11 @@
   # Nix settings
   nix.package = pkgs.nix;
 
-  # Enable Nix daemon
-  services.nix-daemon.enable = true;
+  # Enable Nix daemon (disabled in latest update)
+  # services.nix-daemon.enable = true;
 
   # Add ability to use TouchID for sudo
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # System settings
   system = {
@@ -90,8 +90,9 @@
   # System packages
   environment.systemPackages = with pkgs; [
     colima
-    docker
-    needle # uber ioc framework for ios apps
+    pinentry_mac
+    # docker
+    # needle # uber ioc framework for ios apps
   ];
 
   homebrew = {
@@ -102,8 +103,8 @@
       "dozer"
       "raycast"
       "skip"
-      "android-platform-tools"
-      "android-studio"
+      # "android-platform-tools"
+      # "android-studio"
       "google-cloud-sdk"
     ];
     taps = [ "nikitabobko/tap" "skiptools/skip" ];

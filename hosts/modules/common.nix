@@ -58,16 +58,6 @@
 
     # music
     spotify
-
-    # cloud tooling
-    awscli2
-    terraform
-    terragrunt
-
-    # virtualization
-    docker-compose
-    kubectl
-    lazydocker
   ];
 
   fonts.packages = with pkgs; [

@@ -11,7 +11,7 @@
     ../modules/go.nix
     ../modules/gpg.nix
     ../modules/home.nix
-    ../modules/krew.nix
+    # ../modules/krew.nix
     ../modules/lang-deno.nix
     ../modules/lang-rust.nix
     ../modules/lazygit.nix
@@ -22,17 +22,12 @@
     ../modules/zsh.nix
     ../modules/vscode.nix
     ../modules/zeditor.nix
+    ../modules/catppuccin.nix
   ];
 
   # Nixpkgs configuration
   nixpkgs = {
     overlays = [ outputs.overlays.stable-packages ];
     config = { allowUnfree = true; };
-  };
-
-  # Catpuccin flavor and accent
-  catppuccin = {
-    flavor = "frappe";
-    accent = "sapphire";
   };
 }
