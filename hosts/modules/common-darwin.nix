@@ -107,7 +107,7 @@
       # "android-studio"
       "google-cloud-sdk"
     ];
-    taps = [ "nikitabobko/tap" "skiptools/skip" ];
+    taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "zap";
   };
 
