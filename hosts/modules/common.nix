@@ -48,6 +48,7 @@
     fd
     eza
     ripgrep
+    cloudflared
 
     # tuis
     caligula
