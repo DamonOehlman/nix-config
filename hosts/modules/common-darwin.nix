@@ -102,7 +102,6 @@
       "anki"
       "dozer"
       "raycast"
-      "skip"
       # "android-platform-tools"
       # "android-studio"
       "google-cloud-sdk"
