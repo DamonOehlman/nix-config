@@ -1,4 +1,6 @@
 { userConfig, ... }: {
+  system.primaryUser = "damo";
+
   # User configuration
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";
