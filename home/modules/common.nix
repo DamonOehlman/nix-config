@@ -14,6 +14,7 @@
     # ../modules/krew.nix
     ../modules/lang-deno.nix
     ../modules/lang-rust.nix
+    ../modules/lang-node.nix
     ../modules/lazygit.nix
     ../modules/neovim.nix
     ../modules/saml2aws.nix

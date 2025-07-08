@@ -8,7 +8,7 @@
   # programs.home-manager.backupFileExtension = "backup";
 
   # Ensure homebrew is in the PATH
-  home.sessionPath = [ "/opt/homebrew/bin/" "$HOME/.npm-global/bin/" ];
+  home.sessionPath = [ "/opt/homebrew/bin/" ];
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
