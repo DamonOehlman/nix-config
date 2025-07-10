@@ -16,6 +16,13 @@
             }
           }
         }
+      },
+      "agent": {
+        "enabled": false,
+        "version": "1"
+      },
+      "terminal": {
+        "dock": "right"
       }
     }
   '';
