@@ -32,7 +32,8 @@
     #   then false
     #   else true;
     enable = true;
-    defaultCacheTtl = 86400;
+    defaultCacheTtl = 60;
+    maxCacheTtl = 120;
     enableSshSupport = true;
     sshKeys = [ "${userConfig.gpgSshKey}" ];
     # pinentryFlavour = "curses";
