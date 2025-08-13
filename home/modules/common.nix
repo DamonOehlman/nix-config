@@ -25,6 +25,9 @@
     ../modules/vscode.nix
     ../modules/zeditor.nix
     ../modules/catppuccin.nix
+
+    # ai helpers
+    ./claude.nix
   ];
 
   # Nixpkgs configuration
