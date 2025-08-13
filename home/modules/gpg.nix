@@ -37,6 +37,6 @@
     enableSshSupport = true;
     sshKeys = [ "${userConfig.gpgSshKey}" ];
     # pinentryFlavour = "curses";
-    pinentry = { package = pkgs.pinentry_mac; };
+    pinentry = { package = pkgs.pinentry-tty; };
   };
 }
