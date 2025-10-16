@@ -32,10 +32,11 @@
     #   then false
     #   else true;
     enable = true;
-    defaultCacheTtl = 86400;
+    defaultCacheTtl = 3600;
+    maxCacheTtl = 7200;
     enableSshSupport = true;
     sshKeys = [ "${userConfig.gpgSshKey}" ];
     # pinentryFlavour = "curses";
-    pinentry = { package = pkgs.pinentry_mac; };
+    pinentry = { package = pkgs.pinentry-tty; };
   };
 }
