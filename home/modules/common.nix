@@ -1,4 +1,5 @@
-{ outputs, ... }: {
+{ outputs, ... }:
+{
   imports = [
     ../modules/alacritty.nix
     ../modules/kitty.nix
@@ -22,7 +23,7 @@
     ../modules/scripts.nix
     ../modules/tmux.nix
     ../modules/zsh.nix
-    ../modules/vscode.nix
+    # ../modules/vscode.nix
     ../modules/zeditor.nix
     ../modules/catppuccin.nix
 
@@ -33,6 +34,8 @@
   # Nixpkgs configuration
   nixpkgs = {
     overlays = [ outputs.overlays.stable-packages ];
-    config = { allowUnfree = true; };
+    config = {
+      allowUnfree = true;
+    };
   };
 }

@@ -1,10 +1,15 @@
-{ pkgs, outputs, ... }: {
-  nix.settings = { experimental-features = "nix-command flakes"; };
+{ pkgs, outputs, ... }:
+{
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+  };
   nix.optimise.automatic = true;
 
   nixpkgs = {
     overlays = [ outputs.overlays.stable-packages ];
-    config = { allowUnfree = true; };
+    config = {
+      allowUnfree = true;
+    };
   };
 
   # System packages
@@ -16,7 +21,12 @@
     nh
 
     # languages
-    (python3.withPackages (ps: with ps; [ pip virtualenv ]))
+    (python3.withPackages (
+      ps: with ps; [
+        pip
+        virtualenv
+      ]
+    ))
     pipenv
     rustup
     deno
@@ -32,7 +42,7 @@
 
     # editors
     zed-editor
-    vscode
+    # vscode
     vim
 
     # cli
