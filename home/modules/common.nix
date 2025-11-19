@@ -29,6 +29,9 @@
 
     # ai helpers
     ./claude.nix
+
+    # cardano tooling
+    ./cardano.nix
   ];
 
   # Nixpkgs configuration
