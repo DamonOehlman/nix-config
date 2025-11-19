@@ -1,28 +1,19 @@
 { pkgs, ... }:
 {
+  # Note: We use a custom Rust-based key generator instead of cardano-cli
+  # See: cnft.dev-workers/tools/keygen/
+  #
+  # To use: cargo build --release --bin cardano-keygen
+  #
+  # Benefits:
+  # - Lightweight (~2MB vs 100MB+ for cardano-node)
+  # - Fast key generation
+  # - Uses Pallas (same as our signing service)
+  # - No GHC/Haskell dependencies
+
   home.packages = with pkgs; [
-    # Cardano CLI for key generation and transaction building
-    cardano-cli
-
-    # Optional: cardano-node if you want to run a local node
-    # cardano-node
-
-    # Optional: cardano-wallet for wallet functionality
-    # cardano-wallet
+    # Utilities for working with Cardano keys
+    jq # Parse JSON key files
+    xxd # Hex manipulation
   ];
-
-  # Add cardano-cli to path
-  home.sessionPath = [
-    "$HOME/.local/bin"
-  ];
-
-  # Optional: Set up cardano network configuration
-  home.file.".cardano/mainnet-config.json" = {
-    enable = false; # Set to true if you want to download mainnet configs
-    text = ''
-      {
-        "NetworkMagic": 764824073
-      }
-    '';
-  };
 }
