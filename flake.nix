@@ -38,7 +38,15 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
-  outputs = { self, catppuccin, darwin, home-manager, nix-homebrew, nixpkgs, ...
+  outputs =
+    {
+      self,
+      catppuccin,
+      darwin,
+      home-manager,
+      nix-homebrew,
+      nixpkgs,
+      ...
     }@inputs:
     let
       inherit (self) outputs;
@@ -56,7 +64,8 @@
       };
 
       # Function for NixOS system configuration
-      mkNixosConfiguration = hostname: username:
+      mkNixosConfiguration =
+        hostname: username:
         nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs hostname;
@@ -66,7 +75,8 @@
         };
 
       # Function for nix-darwin system configuration
-      mkDarwinConfiguration = hostname: username:
+      mkDarwinConfiguration =
+        hostname: username:
         darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {
@@ -83,8 +93,13 @@
         };
 
       # Function for Home Manager configuration
-      mkHomeConfiguration = { system ? "x86_64-linux", username, hostname
-        , homeDirectory ? "/home/${username}", }:
+      mkHomeConfiguration =
+        {
+          system ? "x86_64-linux",
+          username,
+          hostname,
+          homeDirectory ? "/home/${username}",
+        }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; };
           extraSpecialArgs = {
@@ -97,7 +112,8 @@
             catppuccin.homeModules.catppuccin
           ];
         };
-    in {
+    in
+    {
       nixosConfigurations = {
         energy = mkNixosConfiguration "energy" "nabokikh";
         nabokikh-z13 = mkNixosConfiguration "nabokikh-z13" "nabokikh";
