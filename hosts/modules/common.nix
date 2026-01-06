@@ -35,7 +35,6 @@
 
     # development general
     gnumake
-    binserve
 
     # terminal
     kitty
@@ -53,7 +52,7 @@
     delta
     jq
     killall
-    du-dust
+    dust
     cmake
     fd
     eza
