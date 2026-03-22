@@ -17,12 +17,6 @@
     # Global catppuccin theme
     catppuccin.url = "github:catppuccin/nix";
 
-    # NixOS Spicetify
-    spicetify-nix = {
-      url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Nix Darwin (for MacOS machines)
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -35,10 +29,7 @@
     };
 
     # Cardano
-    aiken = {
-      url = "github:aiken-lang/aiken";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    aiken.url = "github:aiken-lang/aiken";
 
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";

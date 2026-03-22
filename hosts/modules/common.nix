@@ -1,4 +1,9 @@
-{ pkgs, outputs, ... }:
+{
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}:
 {
   nix.settings = {
     experimental-features = "nix-command flakes";
@@ -31,7 +36,7 @@
     rustup
     deno
     nodejs_22
-    aiken
+    inputs.aiken.packages.${pkgs.stdenv.hostPlatform.system}.aiken
 
     # development general
     gnumake
@@ -66,8 +71,6 @@
     slack
     discord
 
-    # music
-    spotify
   ];
 
   fonts.packages = with pkgs; [
