@@ -28,9 +28,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Cardano
-    aiken.url = "github:aiken-lang/aiken";
-
     # Homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };

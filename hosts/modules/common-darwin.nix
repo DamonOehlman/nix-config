@@ -104,10 +104,10 @@
       "raycast"
       # "android-platform-tools"
       # "android-studio"
-      "google-cloud-sdk"
+      "gcloud-cli"
     ];
     taps = [ "nikitabobko/tap" ];
-    onActivation.cleanup = "zap";
+    onActivation.cleanup = "uninstall";
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
