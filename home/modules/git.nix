@@ -4,6 +4,7 @@
   programs.git = {
     enable = true;
     signing = {
+      format = "openpgp";
       key = userConfig.gitKey;
       signByDefault = true;
     };
