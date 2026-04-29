@@ -13,7 +13,6 @@
     ../modules/gpg.nix
     ../modules/home.nix
     # ../modules/krew.nix
-    ../modules/lang-deno.nix
     ../modules/lang-rust.nix
     ../modules/lang-node.nix
     ../modules/lang-bun.nix

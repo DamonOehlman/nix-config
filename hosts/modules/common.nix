@@ -20,7 +20,7 @@
   environment.systemPackages = with pkgs; [
     # nix
     nil
-    nixfmt-classic
+    nixfmt
     home-manager
     nh
 
@@ -32,7 +32,6 @@
       ]
     ))
     pipenv
-    deno
     nodejs_22
     aiken
 
