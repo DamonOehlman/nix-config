@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   # Note: We use a custom Rust-based key generator instead of cardano-cli
   # See: cnft.dev-workers/tools/keygen/
   #
@@ -11,9 +10,12 @@
   # - Uses Pallas (same as our signing service)
   # - No GHC/Haskell dependencies
 
-  home.packages = with pkgs; [
+  home.packages = [
+    # Aiken - Cardano smart contract language and toolchain
+    pkgs.aiken
+
     # Utilities for working with Cardano keys
-    jq # Parse JSON key files
-    xxd # Hex manipulation
+    pkgs.jq # Parse JSON key files
+    pkgs.xxd # Hex manipulation
   ];
 }

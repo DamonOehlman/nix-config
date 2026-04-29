@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__acp__Bash",
+      "mcp__acp__Edit",
+      "Bash(darwin-rebuild --list-generations)",
+      "Bash(sudo darwin-rebuild *)",
+      "Read(//Users/damo/code/defrag/cnft.dev-workers/**)",
+      "Bash(git config *)",
+      "Read(//Users/damo/.config/git/**)",
+      "Read(//Users/damo/**)"
+    ]
+  }
+}

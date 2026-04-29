@@ -1,4 +1,8 @@
-{ pkgs, outputs, ... }:
+{
+  pkgs,
+  outputs,
+  ...
+}:
 {
   nix.settings = {
     experimental-features = "nix-command flakes";
@@ -16,22 +20,9 @@
   environment.systemPackages = with pkgs; [
     # nix
     nil
-    nixfmt-classic
+    nixfmt
     home-manager
     nh
-
-    # languages
-    (python3.withPackages (
-      ps: with ps; [
-        pip
-        virtualenv
-      ]
-    ))
-    pipenv
-    rustup
-    deno
-    nodejs_22
-    aiken
 
     # development general
     gnumake
@@ -40,7 +31,7 @@
     kitty
 
     # editors
-    zed-editor
+    # zed-editor  # installed via Homebrew cask for newer versions
     # vscode
     vim
 
@@ -53,7 +44,6 @@
     jq
     killall
     dust
-    cmake
     fd
     eza
     ripgrep
@@ -66,8 +56,6 @@
     slack
     discord
 
-    # music
-    spotify
   ];
 
   fonts.packages = with pkgs; [

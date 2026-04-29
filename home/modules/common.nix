@@ -6,6 +6,7 @@
     ../modules/atuin.nix
     ../modules/bat.nix
     ../modules/btop.nix
+    ../modules/direnv.nix
     ../modules/fastfetch.nix
     ../modules/fzf.nix
     ../modules/git.nix
@@ -13,8 +14,6 @@
     ../modules/gpg.nix
     ../modules/home.nix
     # ../modules/krew.nix
-    ../modules/lang-deno.nix
-    ../modules/lang-rust.nix
     ../modules/lang-node.nix
     ../modules/lang-bun.nix
     ../modules/lazygit.nix

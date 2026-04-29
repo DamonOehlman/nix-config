@@ -97,6 +97,9 @@
 
   homebrew = {
     enable = true;
+    brews = [
+      "hcloud"
+    ];
     casks = [
       "aerospace"
       "anki"
@@ -104,10 +107,11 @@
       "raycast"
       # "android-platform-tools"
       # "android-studio"
-      "google-cloud-sdk"
+      "gcloud-cli"
+      "zed"
     ];
     taps = [ "nikitabobko/tap" ];
-    onActivation.cleanup = "zap";
+    onActivation.cleanup = "check";
   };
 
   # Used for backwards compatibility, please read the changelog before changing.

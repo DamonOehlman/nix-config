@@ -3,7 +3,13 @@
   # Install git via home-manager module
   programs.git = {
     enable = true;
+    ignores = [
+      "*~"
+      ".DS_Store"
+      ".direnv/"
+    ];
     signing = {
+      format = "openpgp";
       key = userConfig.gitKey;
       signByDefault = true;
     };
