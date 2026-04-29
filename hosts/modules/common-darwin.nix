@@ -107,7 +107,7 @@
       "gcloud-cli"
     ];
     taps = [ "nikitabobko/tap" ];
-    onActivation.cleanup = "uninstall";
+    onActivation.cleanup = "check";
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
