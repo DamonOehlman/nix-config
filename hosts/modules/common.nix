@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   outputs,
   ...
 }:
@@ -33,10 +32,9 @@
       ]
     ))
     pipenv
-    rustup
     deno
     nodejs_22
-    inputs.aiken.packages.${pkgs.stdenv.hostPlatform.system}.aiken
+    aiken
 
     # development general
     gnumake

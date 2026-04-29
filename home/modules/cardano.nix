@@ -1,8 +1,4 @@
-{ pkgs, inputs, ... }:
-let
-  system = pkgs.stdenv.hostPlatform.system;
-in
-{
+{ pkgs, ... }: {
   # Note: We use a custom Rust-based key generator instead of cardano-cli
   # See: cnft.dev-workers/tools/keygen/
   #
@@ -16,7 +12,7 @@ in
 
   home.packages = [
     # Aiken - Cardano smart contract language and toolchain
-    inputs.aiken.packages.${system}.aiken
+    pkgs.aiken
 
     # Utilities for working with Cardano keys
     pkgs.jq # Parse JSON key files
