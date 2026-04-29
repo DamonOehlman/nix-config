@@ -21,8 +21,8 @@ in {
       lua-language-server
       markdownlint-cli
       nixd
-      nodePackages.bash-language-server
-      nodePackages.prettier
+      bash-language-server
+      prettier
       pyright
       ruff
       shellcheck
