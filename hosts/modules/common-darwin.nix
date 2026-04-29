@@ -97,6 +97,9 @@
 
   homebrew = {
     enable = true;
+    brews = [
+      "hcloud"
+    ];
     casks = [
       "aerospace"
       "anki"
