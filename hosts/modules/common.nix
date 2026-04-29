@@ -31,7 +31,7 @@
     kitty
 
     # editors
-    zed-editor
+    # zed-editor  # installed via Homebrew cask for newer versions
     # vscode
     vim
 

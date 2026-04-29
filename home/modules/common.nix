@@ -6,6 +6,7 @@
     ../modules/atuin.nix
     ../modules/bat.nix
     ../modules/btop.nix
+    ../modules/direnv.nix
     ../modules/fastfetch.nix
     ../modules/fzf.nix
     ../modules/git.nix

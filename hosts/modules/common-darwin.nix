@@ -105,6 +105,7 @@
       # "android-platform-tools"
       # "android-studio"
       "gcloud-cli"
+      "zed"
     ];
     taps = [ "nikitabobko/tap" ];
     onActivation.cleanup = "check";
