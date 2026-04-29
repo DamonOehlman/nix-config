@@ -24,17 +24,6 @@
     home-manager
     nh
 
-    # languages
-    (python3.withPackages (
-      ps: with ps; [
-        pip
-        virtualenv
-      ]
-    ))
-    pipenv
-    nodejs_22
-    aiken
-
     # development general
     gnumake
 
@@ -55,7 +44,6 @@
     jq
     killall
     dust
-    cmake
     fd
     eza
     ripgrep
