@@ -99,6 +99,7 @@
     enable = true;
     brews = [
       "hcloud"
+      "hudochenkov/sshpass/sshpass"
     ];
     casks = [
       "aerospace"
@@ -110,7 +111,7 @@
       "gcloud-cli"
       "zed"
     ];
-    taps = [ "nikitabobko/tap" ];
+    taps = [ "nikitabobko/tap" "hudochenkov/sshpass" ];
     onActivation.cleanup = "check";
   };
 
