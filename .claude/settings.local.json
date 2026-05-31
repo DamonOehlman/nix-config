@@ -8,7 +8,11 @@
       "Read(//Users/damo/code/defrag/cnft.dev-workers/**)",
       "Bash(git config *)",
       "Read(//Users/damo/.config/git/**)",
-      "Read(//Users/damo/**)"
+      "Read(//Users/damo/**)",
+      "Bash(nix flake *)",
+      "Bash(python3 -c 'import json,sys; d=json.load\\(sys.stdin\\); n=d['\\\\''locks'\\\\'']['\\\\''nodes'\\\\'']; root=n[d['\\\\''locks'\\\\'']['\\\\''root'\\\\'']]; print\\('\\\\''root nixpkgs ->'\\\\'', root['\\\\''inputs'\\\\''].get\\('\\\\''nixpkgs'\\\\''\\)\\); print\\('\\\\''hm inputs:'\\\\'', n.get\\('\\\\''home-manager'\\\\'',{}\\).get\\('\\\\''inputs'\\\\''\\)\\); *)",
+      "Bash(nix eval *)",
+      "Bash([ -f \"$f\" ])"
     ]
   }
 }
