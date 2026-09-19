@@ -16,6 +16,15 @@
   # Nix settings
   nix.package = pkgs.nix;
 
+  # Age-based garbage collection of the root/system profiles. This deletes
+  # system generations older than 30 days and then collects anything that is
+  # no longer reachable. Requires nix.enable (default true).
+  nix.gc = {
+    automatic = true;
+    interval = [{ Weekday = 7; Hour = 3; Minute = 15; }];
+    options = "--delete-older-than 30d";
+  };
+
   # Enable Nix daemon (disabled in latest update)
   # services.nix-daemon.enable = true;
 
@@ -104,6 +113,8 @@
     casks = [
       "aerospace"
       "anki"
+      "brave-browser"
+      "discord"
       "dozer"
       "raycast"
       # "android-platform-tools"

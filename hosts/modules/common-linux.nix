@@ -6,6 +6,16 @@
     config = { allowUnfree = true; };
   };
 
+  # Age-based garbage collection of the root/system profiles. This deletes
+  # system generations older than 30 days and then collects anything that is
+  # no longer reachable.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    randomizedDelaySec = "45min";
+    options = "--delete-older-than 30d";
+  };
+
   # Register flake inputs for nix commands
   nix.registry = lib.mapAttrs (_: flake: { inherit flake; })
     (lib.filterAttrs (_: lib.isType "flake") inputs);
@@ -112,6 +122,7 @@
     gcc
     glib
     brave
+    discord
     mesa
     pavucontrol
     pulseaudio

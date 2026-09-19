@@ -225,7 +225,6 @@ This setup includes a wide range of custom modules and configurations to enhance
 2. Development Tools:
 
    - `git.nix`: Git version control
-   - `go.nix`: Go programming language
    - `neovim.nix`: Neovim text editor
    - `lazygit.nix`: Terminal UI for Git
 

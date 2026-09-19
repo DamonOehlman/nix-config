@@ -54,7 +54,8 @@
 
     # chat
     slack
-    discord
+    # discord  # macOS: installed via Homebrew cask (Nix bundle is read-only,
+    #          # which breaks Discord's self-updater). Linux: in common-linux.nix.
 
   ];
 

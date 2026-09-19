@@ -12,7 +12,14 @@
       "Bash(nix flake *)",
       "Bash(python3 -c 'import json,sys; d=json.load\\(sys.stdin\\); n=d['\\\\''locks'\\\\'']['\\\\''nodes'\\\\'']; root=n[d['\\\\''locks'\\\\'']['\\\\''root'\\\\'']]; print\\('\\\\''root nixpkgs ->'\\\\'', root['\\\\''inputs'\\\\''].get\\('\\\\''nixpkgs'\\\\''\\)\\); print\\('\\\\''hm inputs:'\\\\'', n.get\\('\\\\''home-manager'\\\\'',{}\\).get\\('\\\\''inputs'\\\\''\\)\\); *)",
       "Bash(nix eval *)",
-      "Bash([ -f \"$f\" ])"
+      "Bash([ -f \"$f\" ])",
+      "Bash(rustup default *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(zsh -lic 'which rustc cargo rustup; rustc --version')",
+      "Bash(zsh -ic 'echo $PATH | tr \":\" \"\\\\n\" | grep -nE \"cargo/bin|/nix/|Nix|home-manager|/run/current\" ')",
+      "Bash(zsh -ic 'type -a cargo rustc rustup 2>/dev/null; echo \"--- versions ---\"; cargo --version 2>&1; rustc --version 2>&1; rustup --version 2>&1')",
+      "Bash(echo \"=== does any shell rc source cargo/env or reference rustup? ===\"; grep -rEn \"cargo/env|rustup|\\\\.rustup\" ~/.zshrc ~/.zshenv ~/.zprofile ~/.config/zsh 2>/dev/null; echo \"--- nix zsh.nix module ---\"; grep -rEn \"cargo/env|rustup|cargo/bin|rust\" /Users/damo/code/DamonOehlman/nix-config/home/modules/zsh.nix 2>/dev/null; echo \"=== count toolchains size each ===\"; du -sh ~/.rustup/toolchains/* 2>/dev/null; echo \"=== last access of rustup toolchains \\(used recently?\\) ===\"; ls -lu ~/.rustup/toolchains 2>/dev/null)",
+      "Bash(go env *)"
     ]
   }
 }
