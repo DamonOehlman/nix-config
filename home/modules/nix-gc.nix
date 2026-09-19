@@ -20,7 +20,7 @@ in {
   # and fails with "unrecognised flag '--delete-older-than 30d'". Rebuild the
   # argument list properly.
   launchd.agents.nix-gc.config.ProgramArguments =
-    lib.mkIf pkgs.stdenv.isDarwin (lib.mkForce [
+    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (lib.mkForce [
       "${nixPackage}/bin/nix-collect-garbage"
       "--delete-older-than"
       keep

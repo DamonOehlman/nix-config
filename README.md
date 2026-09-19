@@ -217,7 +217,7 @@ This setup includes a wide range of custom modules and configurations to enhance
 
 1. Terminal and Shell:
 
-   - `alacritty.nix`: Alacritty terminal emulator
+   - `kitty.nix`: Kitty terminal emulator
    - `atuin.nix`: Shell history sync
    - `zsh.nix`: Zsh shell configuration
    - `tmux.nix`: Terminal multiplexer
@@ -275,14 +275,14 @@ This setup includes a wide range of custom modules and configurations to enhance
 
 Each of these modules can be imported into your NixOS, nix-darwin, or Home Manager configurations to enable specific features or applications. To use a module, simply add it to the `imports` list in your configuration file.
 
-For example, to enable Alacritty and Neovim in your home configuration:
+For example, to enable Kitty and Neovim in your home configuration:
 
 ```nix
 { config, pkgs, ... }:
 
 {
   imports = [
-    ./modules/alacritty.nix
+    ./modules/kitty.nix
     ./modules/neovim.nix
     # Other modules...
   ];

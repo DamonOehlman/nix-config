@@ -171,7 +171,7 @@
     run = ['move-node-to-workspace 2']
 
     [[on-window-detected]]
-    if.app-id = 'org.alacritty'
+    if.app-id = 'net.kovidgoyal.kitty'
     run = ['move-node-to-workspace 1']
 
     [[on-window-detected]]

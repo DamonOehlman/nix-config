@@ -10,7 +10,6 @@
     accent = "sapphire";
 
     kitty.enable = true;
-    alacritty.enable = true;
     btop.enable = true;
     delta.enable = true;
     starship.enable = true;
