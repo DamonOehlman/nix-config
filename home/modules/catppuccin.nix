@@ -1,11 +1,15 @@
 { ... }: {
   # Catpuccin flavor and accent
   catppuccin = {
+    # Global toggle on, but don't auto-enroll every port — keep the
+    # explicit per-port enables below (matches pre-autoEnable behavior).
+    enable = true;
+    autoEnable = false;
+
     flavor = "frappe";
     accent = "sapphire";
 
     kitty.enable = true;
-    alacritty.enable = true;
     btop.enable = true;
     delta.enable = true;
     starship.enable = true;

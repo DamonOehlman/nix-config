@@ -3,6 +3,12 @@
   programs.fzf = {
     enable = true;
 
+    # Atuin owns Ctrl-R. Its integration is sourced after fzf's, so it already
+    # won in practice; this just makes it explicit and silences the conflict
+    # warning. To hand Ctrl-R back to fzf instead, drop this line and set
+    # `flags = ["--disable-ctrl-r"]` in atuin.nix.
+    historyWidget.command = "";
+
     defaultCommand = "find .";
     defaultOptions = [
       "--bind '?:toggle-preview'"

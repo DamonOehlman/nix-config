@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+#
+# direnv-prune — expire stale nix-direnv caches so the nix store can actually
+# be garbage collected.
+#
+# Every project using nix-direnv registers a GC root under
+# /nix/var/nix/gcroots/auto pointing into its .direnv/, which pins that dev
+# shell's whole closure indefinitely. Age-based GC
+# (`nix-collect-garbage --delete-older-than`) will never reclaim them, because
+# a live root is a live root regardless of age. Deleting a stale .direnv drops
+# the root; the next GC then frees the closure. Re-entering the directory
+# rebuilds the cache, so the cost of pruning too eagerly is a re-evaluation,
+# not lost work.
+#
+# Freshness is taken from the newest .direnv/*.rc file, which nix-direnv
+# rewrites whenever it re-evaluates the shell. Note this tracks re-evaluation
+# rather than use: a project you work in daily but whose flake.lock never
+# changes will still look stale.
+#
+# Dry run by default; pass --apply to delete.
+
+set -euo pipefail
+
+root="${HOME}/code"
+days=30
+apply=false
+
+usage() {
+  cat <<'EOF'
+usage: direnv-prune [--root DIR] [--days N] [--apply]
+
+  --root DIR   tree to search for .direnv caches (default: ~/code)
+  --days N     expire caches not re-evaluated in N days (default: 30)
+  --apply      actually delete; without it, only report
+
+After --apply, reclaim the space with:
+  nix-collect-garbage --delete-older-than 30d
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --root) root="${2:?--root needs a directory}"; shift 2 ;;
+    --days) days="${2:?--days needs a number}"; shift 2 ;;
+    --apply) apply=true; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "direnv-prune: unknown argument '$1'" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
+if [ ! -d "$root" ]; then
+  echo "direnv-prune: no such directory: $root" >&2
+  exit 1
+fi
+
+# BSD and GNU coreutils disagree on both of these.
+if stat -f %m . >/dev/null 2>&1; then
+  mtime() { stat -f %m "$1"; }
+  fmt_date() { date -r "$1" +%Y-%m-%d; }
+else
+  mtime() { stat -c %Y "$1"; }
+  fmt_date() { date -d "@$1" +%Y-%m-%d; }
+fi
+
+stale=$(mktemp)
+trap 'rm -f "$stale"' EXIT
+
+now=$(date +%s)
+cutoff=$((now - days * 86400))
+kept=0
+
+while IFS= read -r cache; do
+  newest=$(mtime "$cache")
+  for rc in "$cache"/*.rc; do
+    [ -e "$rc" ] || continue
+    m=$(mtime "$rc")
+    [ "$m" -gt "$newest" ] && newest=$m
+  done
+
+  if [ "$newest" -lt "$cutoff" ]; then
+    printf '%s\t%s\n' "$newest" "$cache" >>"$stale"
+  else
+    kept=$((kept + 1))
+  fi
+done < <(find "$root" -type d -name .direnv -prune 2>/dev/null)
+
+count=$(wc -l <"$stale" | tr -d ' ')
+
+if [ "$count" -eq 0 ]; then
+  echo "direnv-prune: nothing stale under $root ($kept cache(s) within $days days)"
+  exit 0
+fi
+
+if [ "$apply" = true ]; then
+  echo "removing $count cache(s) not re-evaluated in $days days:"
+else
+  echo "would remove $count cache(s) not re-evaluated in $days days:"
+fi
+
+while IFS=$'\t' read -r when cache; do
+  printf '  %s  %s\n' "$(fmt_date "$when")" "$cache"
+  if [ "$apply" = true ]; then
+    rm -rf "$cache"
+  fi
+done < <(sort -n "$stale")
+
+echo
+if [ "$apply" = true ]; then
+  echo "$count removed, $kept kept. reclaim the store with:"
+  echo "  nix-collect-garbage --delete-older-than ${days}d"
+else
+  echo "$kept cache(s) kept. re-run with --apply to delete."
+fi

@@ -74,7 +74,13 @@
       # zle -N edit-command-line
       # bindkey "^e" edit-command-line
 
-      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+      # SSH_AUTH_SOCK is exported by services.gpg-agent (gpg.nix) via
+      # programs.zsh.profileExtra -> ~/.zprofile, which also guards against
+      # clobbering a forwarded agent over SSH. Don't set it again here.
+      #
+      # The launch below is still needed: home-manager's gpg-agent launchd job
+      # socket-activates on /private/var/run/..., but gpgconf reports
+      # ~/.gnupg/S.gpg-agent, so nothing starts the agent for ssh on login.
       gpgconf --launch gpg-agent
     '';
   };
