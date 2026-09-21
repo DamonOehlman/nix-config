@@ -36,35 +36,44 @@ let
     # see one window instead of several. Routing to tmux keeps tiling intact —
     # tmux windows are invisible to the window manager.
     #
-    # Key/mods spelling matches alacritty's own defaults: the unshifted
-    # character with Shift in mods.
+    # Any binding involving Shift must name the SHIFTED character, not the
+    # physical key — the key event carries what the keypress produces. This
+    # matches alacritty's own defaults ("{" / "}" / "?" / "*" all appear with
+    # Shift in mods). Writing key = "]" with Shift simply never fires.
+    #
+    # Note alacritty's *documented* default for SelectNextTab is "]" with
+    # Command|Shift, which contradicts that convention and appears to be an
+    # upstream inconsistency. Don't copy it.
     [[keyboard.bindings]]
     key = "T"
     mods = "Command"
     chars = "${ctrlB}c"
 
     [[keyboard.bindings]]
-    key = "]"
+    key = "}"
     mods = "Command|Shift"
     chars = "${ctrlB}n"
 
     [[keyboard.bindings]]
-    key = "["
+    key = "{"
     mods = "Command|Shift"
     chars = "${ctrlB}p"
 
     # Jump to window N. Ctrl+Shift rather than Cmd because AeroSpace binds
     # cmd-1..9 to workspace switching and grabs them before alacritty sees
     # them. tmux baseIndex is 1, so these line up with the numbers on screen.
-    ${lib.concatMapStrings
-      (n: ''
+    #
+    # Same rule as above, so these are the shifted symbols rather than digits.
+    # That assumes a US/AU keyboard layout.
+    ${lib.concatStrings (lib.imap1
+      (n: sym: ''
         [[keyboard.bindings]]
-        key = "${toString n}"
+        key = "${sym}"
         mods = "Control|Shift"
         chars = "${ctrlB}${toString n}"
 
       '')
-      (lib.range 1 9)}
+      [ "!" "@" "#" "$" "%" "^" "&" "*" "(" ])}
   '';
 in {
   # Install alacritty via home-manager module
