@@ -1,34 +1,84 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }:
+let
+  # TOML escape for tmux's prefix key, C-b (byte 0x02).
+  #
+  # Assembled from a Nix-escaped backslash rather than written literally: the
+  # six characters of a backslash-u escape have to reach the TOML file so
+  # alacritty's parser decodes them, and a raw control byte in the source is
+  # both fragile to edit and invalid inside a TOML basic string.
+  ctrlB = "\\" + "u0002";
+
+  # Keybindings are hand-written TOML rather than going through
+  # programs.alacritty.settings, because home-manager's TOML generator cannot
+  # express the above: it emits values as TOML *literal* strings ('...'), where
+  # escapes are not interpreted, and a raw control byte breaks its JSON
+  # round-trip outright.
+  #
+  # Every binding lives here, not just the tmux ones. Alacritty loads the
+  # importing file last and replaces any field that file also defines, so
+  # leaving keyboard.bindings in settings would silently override all of this.
+  keybindings = pkgs.writeText "alacritty-keybindings.toml" ''
+    [[keyboard.bindings]]
+    key = "C"
+    mods = "Control|Shift"
+    action = "Copy"
+
+    [[keyboard.bindings]]
+    key = "V"
+    mods = "Control|Shift"
+    action = "Paste"
+
+    # Tab keys, driven through tmux rather than alacritty's own tabs.
+    #
+    # Alacritty does have native tabs bound to exactly these keys, but they are
+    # macOS window tabs: they only form when AppleWindowTabbingMode is "always",
+    # and a tabbed window collapses into a single NSWindow, so AeroSpace would
+    # see one window instead of several. Routing to tmux keeps tiling intact —
+    # tmux windows are invisible to the window manager.
+    #
+    # Key/mods spelling matches alacritty's own defaults: the unshifted
+    # character with Shift in mods.
+    [[keyboard.bindings]]
+    key = "T"
+    mods = "Command"
+    chars = "${ctrlB}c"
+
+    [[keyboard.bindings]]
+    key = "]"
+    mods = "Command|Shift"
+    chars = "${ctrlB}n"
+
+    [[keyboard.bindings]]
+    key = "["
+    mods = "Command|Shift"
+    chars = "${ctrlB}p"
+
+    # Jump to window N. Ctrl+Shift rather than Cmd because AeroSpace binds
+    # cmd-1..9 to workspace switching and grabs them before alacritty sees
+    # them. tmux baseIndex is 1, so these line up with the numbers on screen.
+    ${lib.concatMapStrings
+      (n: ''
+        [[keyboard.bindings]]
+        key = "${toString n}"
+        mods = "Control|Shift"
+        chars = "${ctrlB}${toString n}"
+
+      '')
+      (lib.range 1 9)}
+  '';
+in {
   # Install alacritty via home-manager module
   programs.alacritty = {
     enable = true;
     settings = {
+      general.import = [ "${keybindings}" ];
+
       terminal.shell = {
         program = "zsh";
         args = [ "-l" "-c" "tmux" ];
       };
 
       env = { TERM = "xterm-256color"; };
-
-      # Tabs are built in and need no configuration: Cmd+T new, Cmd+Shift+[ ]
-      # to cycle, Cmd+Tab / Cmd+Shift+Tab likewise. Cmd+1-9 would select tabs
-      # 1-9 but AeroSpace binds those to workspace switching and grabs them
-      # first, so use Cmd+Shift+[ ] to walk instead.
-      #
-      # Bindings listed here are merged into alacritty's defaults rather than
-      # replacing them, so the tab keys survive.
-      keyboard.bindings = [
-        {
-          key = "C";
-          mods = "Control|Shift";
-          action = "Copy";
-        }
-        {
-          key = "V";
-          mods = "Control|Shift";
-          action = "Paste";
-        }
-      ];
 
       # Keyboard-driven link opening. Ctrl+Shift+U labels every URL on screen;
       # press a label to open it. Also makes URLs clickable without holding a
