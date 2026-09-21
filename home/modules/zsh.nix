@@ -58,8 +58,12 @@
       lt = "eza --tree --level=2 --icons"; # tree
     };
     initContent = ''
-      # kubectl auto-complete
-      source <(kubectl completion zsh)
+      # kubectl auto-complete. Guarded: kubectl comes from common-heavy.nix,
+      # which not every host imports, and an unguarded source printed
+      # "command not found: kubectl" on every shell start where it is absent.
+      if command -v kubectl >/dev/null 2>&1; then
+        source <(kubectl completion zsh)
+      fi
 
       # bindings
       bindkey -v
