@@ -126,7 +126,7 @@
     # Also installed per-user by home-manager. Kept system-wide so a terminal
     # is reachable outside the home-manager session (display manager, root,
     # Gamescope on the Deck) — this is why it was added with the steamdeck config.
-    kitty
+    alacritty
     mesa
     pavucontrol
     pulseaudio
