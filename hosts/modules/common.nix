@@ -28,7 +28,11 @@
     gnumake
 
     # terminal
-    kitty
+    # kitty  # user-level via home-manager (home/modules/kitty.nix), which covers
+    #        # both platforms. On macOS a second copy here would put a duplicate
+    #        # kitty.app in /Applications/Nix Apps alongside the home-manager
+    #        # bundle, and two bundles sharing one bundle ID breaks focus.
+    #        # Kept system-wide on Linux only — see common-linux.nix.
 
     # editors
     # zed-editor  # installed via Homebrew cask for newer versions
