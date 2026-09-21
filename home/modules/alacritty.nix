@@ -89,11 +89,13 @@ in {
 
       env = { TERM = "xterm-256color"; };
 
-      # Keyboard-driven link opening. Ctrl+Shift+U labels every URL on screen;
-      # press a label to open it. Also makes URLs clickable without holding a
-      # modifier.
+      # Keyboard-driven link opening, matching kitty's hints kitten:
+      # Ctrl+Shift+E labels every URL on screen, press the number to open it.
+      #
+      # Numeric alphabet rather than alacritty's default letters, since that's
+      # what kitty used. Labels run 1-9 then 0, and pair up beyond ten matches.
       hints = {
-        alphabet = "jfkdls;ahgurieowpq";
+        alphabet = "1234567890";
         enabled = [
           {
             regex = "(https?://|mailto:|file://|git://|ssh://|ftp://)[^\\s\"'()\\[\\]<>]+";
@@ -102,12 +104,15 @@ in {
             persist = false;
             command = if pkgs.stdenv.hostPlatform.isDarwin then "open" else "xdg-open";
             binding = {
-              key = "U";
+              key = "E";
               mods = "Control|Shift";
             };
+            # Shift, not None: tmux runs with `mouse on` and captures the
+            # mouse, so a plain click never reaches alacritty's hint handler.
+            # Shift suppresses mouse reporting, per alacritty(5).
             mouse = {
               enabled = true;
-              mods = "None";
+              mods = "Shift";
             };
           }
         ];
