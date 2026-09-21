@@ -108,7 +108,7 @@ nix flake check          # Check flake for errors
 - `lazygit.nix`: Git TUI
 
 **Terminal and shell:**
-- `zsh.nix`, `tmux.nix`, `kitty.nix`
+- `zsh.nix`, `tmux.nix`, `alacritty.nix`, `kitty.nix`
 - `fzf.nix`, `bat.nix`, `btop.nix`
 
 **Desktop environment:**

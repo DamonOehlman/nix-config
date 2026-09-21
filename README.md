@@ -217,6 +217,7 @@ This setup includes a wide range of custom modules and configurations to enhance
 
 1. Terminal and Shell:
 
+   - `alacritty.nix`: Alacritty terminal emulator
    - `kitty.nix`: Kitty terminal emulator
    - `atuin.nix`: Shell history sync
    - `zsh.nix`: Zsh shell configuration

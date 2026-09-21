@@ -91,7 +91,11 @@
     # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-    cmd-alt-enter = 'exec-and-forget ${pkgs.kitty}/bin/kitty'
+    # Launch through the .app bundle, not $out/bin/alacritty. The bin/ copy
+    # lives outside the bundle, so macOS gives the process no bundle identity
+    # and AeroSpace reports it as NULL-APP-BUNDLE-ID — the on-window-detected
+    # rule below would never match it.
+    cmd-alt-enter = 'exec-and-forget open -na ${pkgs.alacritty}/Applications/Alacritty.app'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
@@ -171,7 +175,7 @@
     run = ['move-node-to-workspace 2']
 
     [[on-window-detected]]
-    if.app-id = 'net.kovidgoyal.kitty'
+    if.app-id = 'org.alacritty'
     run = ['move-node-to-workspace 1']
 
     [[on-window-detected]]
