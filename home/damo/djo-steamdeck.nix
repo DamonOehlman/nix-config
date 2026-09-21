@@ -4,7 +4,6 @@
     ../modules/easyeffects.nix
     ../modules/hyprland.nix
     ../modules/ulauncher.nix
-    ../modules/kitty.nix
   ];
 
   # Enable home-manager

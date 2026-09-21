@@ -198,8 +198,8 @@ in
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3" = {
         "binding" = "<Shift><Super>Return";
-        "command" = "kitty";
-        "name" = "Kitty";
+        "command" = "alacritty";
+        "name" = "Alacritty";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4" = {
@@ -255,7 +255,7 @@ in
         "favorite-apps" = [
           "org.gnome.Nautilus.desktop"
           "brave-browser.desktop"
-          "kitty.desktop"
+          "Alacritty.desktop"
           "org.telegram.desktop.desktop"
         ];
       };
@@ -263,7 +263,7 @@ in
       "org/gnome/shell/extensions/auto-move-windows" = {
         "application-list" = [
           "brave-browser.desktop:1"
-          "kitty.desktop:2"
+          "Alacritty.desktop:2"
           "org.telegram.desktop.desktop:3"
           "com.obsproject.Studio.desktop:4"
           "steam.desktop:4"

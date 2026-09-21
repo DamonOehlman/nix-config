@@ -27,8 +27,12 @@
     # development general
     gnumake
 
-    # terminal
-    kitty
+    # terminal: alacritty is installed per-user via home-manager
+    # (home/modules/alacritty.nix) on both platforms. Deliberately not listed
+    # here — a second system-wide copy on macOS would put a duplicate .app in
+    # /Applications/Nix Apps alongside the home-manager bundle, and two bundles
+    # sharing one bundle ID breaks focus and window management. Linux keeps a
+    # system-wide copy for use outside the user session; see common-linux.nix.
 
     # editors
     # zed-editor  # installed via Homebrew cask for newer versions

@@ -123,6 +123,10 @@
     glib
     brave
     discord
+    # Also installed per-user by home-manager. Kept system-wide so a terminal
+    # is reachable outside the home-manager session (display manager, root,
+    # Gamescope on the Deck) — this is why it was added with the steamdeck config.
+    alacritty
     mesa
     pavucontrol
     pulseaudio
