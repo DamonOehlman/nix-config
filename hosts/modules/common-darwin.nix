@@ -79,8 +79,9 @@
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
       };
+      # `location` is set per host: each machine targets a directory that
+      # actually exists on it (see hosts/darwin/*/configuration.nix).
       screencapture = {
-        location = "/Volumes/user-${userConfig.name}/Downloads/temp";
         type = "png";
         disable-shadow = true;
       };

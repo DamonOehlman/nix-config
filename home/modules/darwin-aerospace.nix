@@ -20,6 +20,12 @@
     # Start AeroSpace at login
     start-at-login = true
 
+    # Automatically reload the config when it changes. home-manager swaps
+    # ~/.aerospace.toml for a new store symlink on every switch, so without
+    # this the running instance would keep the config it loaded at startup.
+    # After enabling, reload once manually to start the auto-reloading.
+    auto-reload-config = true
+
     # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
     enable-normalization-flatten-containers = true
     enable-normalization-opposite-orientation-for-nested-containers = true
