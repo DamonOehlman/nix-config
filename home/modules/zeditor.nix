@@ -11,6 +11,41 @@
           "ctrl-e": "editor::MoveToEndOfLine",
           "ctrl-shift-a": "editor::SelectAll"
         }
+      },
+      {
+        "context": "AgentPanel",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+      },
+      {
+        "context": "AcpThread > Editor",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+      },
+      {
+        "context": "ThreadsSidebar",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+      },
+      {
+        "context": "ThreadsSidebar > Editor",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+      },
+      {
+        "context": "ThreadSwitcher",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
       }
     ]
   '';
