@@ -12,8 +12,9 @@
     alacritty.enable = true;
     btop.enable = true;
     delta.enable = true;
-    starship.enable = true;
-    bat.enable = true;
+    # starship is intentionally not enabled here: its Catppuccin port is
+    # Rust-built and pulls rustc into the home-manager build. The Frappé
+    # palette is vendored in zsh.nix instead.
     tmux = {
       enable = true;
       extraConfig = ''
