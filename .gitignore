@@ -4,3 +4,4 @@ files/configs/ulauncher/shortcuts.json
 files/configs/nvim/lazyvim.json
 .claude/settings.local.json
 .DS_Store
+.tmp/
