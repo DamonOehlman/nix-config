@@ -3,7 +3,6 @@
   imports = [
     ../modules/alacritty.nix
     ../modules/atuin.nix
-    ../modules/bat.nix
     ../modules/btop.nix
     ../modules/direnv.nix
     ../modules/fastfetch.nix
@@ -27,9 +26,6 @@
 
     # ai helpers
     ./claude.nix
-
-    # cardano tooling
-    ./cardano.nix
   ];
 
   # Nixpkgs configuration

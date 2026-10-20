@@ -11,6 +11,20 @@
           "ctrl-e": "editor::MoveToEndOfLine",
           "ctrl-shift-a": "editor::SelectAll"
         }
+      },
+      {
+        "context": "AgentPanel || ThreadsSidebar || ThreadSwitcher",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
+      },
+      {
+        "context": "Editor && (AgentPanel || ThreadsSidebar)",
+        "bindings": {
+          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
+          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
+        }
       }
     ]
   '';

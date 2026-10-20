@@ -25,6 +25,9 @@
     options = "--delete-older-than 30d";
   };
 
+  # Reach every host over the tailnet; no dependency on local subnet routing.
+  services.tailscale.enable = true;
+
   # Enable Nix daemon (disabled in latest update)
   # services.nix-daemon.enable = true;
 
@@ -79,8 +82,9 @@
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
       };
+      # `location` is set per host: each machine targets a directory that
+      # actually exists on it (see hosts/darwin/*/configuration.nix).
       screencapture = {
-        location = "/Volumes/user-${userConfig.name}/Downloads/temp";
         type = "png";
         disable-shadow = true;
       };
