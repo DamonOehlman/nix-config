@@ -25,8 +25,10 @@
     options = "--delete-older-than 30d";
   };
 
-  # Reach every host over the tailnet; no dependency on local subnet routing.
-  services.tailscale.enable = true;
+  # Tailscale is the standalone/App Store client on the Macs today. Enabling
+  # the nix-darwin daemon while that client is present gives two tailscaled
+  # instances; uncomment only after migrating both hosts to this daemon.
+  # services.tailscale.enable = true;
 
   # Enable Nix daemon (disabled in latest update)
   # services.nix-daemon.enable = true;

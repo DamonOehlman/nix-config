@@ -87,6 +87,21 @@
         };
 
       # Function for Home Manager configuration
+      # A headless build host: no Homebrew, no desktop defaults, no GUI casks.
+      mkDarwinBuildHost =
+        hostname: username:
+        darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = {
+            inherit inputs outputs hostname;
+            userConfig = users.${username};
+          };
+          modules = [
+            ./hosts/modules/common-darwin-build.nix
+            ./hosts/darwin/${hostname}/configuration.nix
+          ];
+        };
+
       mkHomeConfiguration =
         {
           system ? "x86_64-linux",
@@ -116,7 +131,7 @@
       };
 
       darwinConfigurations = {
-        "defrag-mini" = mkDarwinConfiguration "defrag-mini" "damo";
+        "defrag-mini" = mkDarwinBuildHost "defrag-mini" "damo";
         "defrag-air" = mkDarwinConfiguration "defrag-air" "damo";
         "djo-affectable" = mkDarwinConfiguration "djo-affectable" "damo";
       };
@@ -129,7 +144,7 @@
           system = "aarch64-darwin";
           username = "damo";
           hostname = "defrag-mini";
-          homeDirectory = "/Volumes/user-damo";
+          homeDirectory = "/Users/damo";
         };
         "damo@defrag-air" = mkHomeConfiguration {
           system = "aarch64-darwin";
