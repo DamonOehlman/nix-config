@@ -159,6 +159,15 @@
           homeDirectory = "/Users/damo";
         };
 
+        # Arch/Omarchy laptop: standalone Home Manager only. Tailscale and
+        # OpenSSH stay system packages/services managed by pacman/systemd.
+        "damo@djo-flip" = mkHomeConfiguration {
+          system = "x86_64-linux";
+          username = "damo";
+          hostname = "djo-flip";
+          homeDirectory = "/home/damo";
+        };
+
         "damo@djo-steamdeck" = mkHomeConfiguration {
           username = "damo";
           hostname = "djo-steamdeck";

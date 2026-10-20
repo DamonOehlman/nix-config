@@ -26,9 +26,9 @@
   };
 
   # Tailscale is the standalone/App Store client on the remaining Macs.
-  # defrag-mini already runs the nix-darwin daemon from its host config.
-  # Enabling this here while the App Store client is present gives two
-  # tailscaled instances; uncomment only after migrating those hosts.
+  # defrag-mini and defrag-air already run the nix-darwin daemon from their
+  # host configs. Enabling this here while the App Store client is present
+  # gives two tailscaled instances; uncomment only after migrating those hosts.
   # services.tailscale.enable = true;
 
   # Enable Nix daemon (disabled in latest update)
