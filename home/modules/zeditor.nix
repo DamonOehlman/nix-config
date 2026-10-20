@@ -13,35 +13,14 @@
         }
       },
       {
-        "context": "AgentPanel",
+        "context": "AgentPanel || ThreadsSidebar || ThreadSwitcher",
         "bindings": {
           "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
           "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
         }
       },
       {
-        "context": "AcpThread > Editor",
-        "bindings": {
-          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
-          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
-        }
-      },
-      {
-        "context": "ThreadsSidebar",
-        "bindings": {
-          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
-          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
-        }
-      },
-      {
-        "context": "ThreadsSidebar > Editor",
-        "bindings": {
-          "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
-          "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]
-        }
-      },
-      {
-        "context": "ThreadSwitcher",
+        "context": "Editor && (AgentPanel || ThreadsSidebar)",
         "bindings": {
           "cmd-alt-]": "agents_sidebar::ToggleThreadSwitcher",
           "cmd-alt-[": ["agents_sidebar::ToggleThreadSwitcher", { "select_last": true }]

@@ -25,6 +25,9 @@
     options = "--delete-older-than 30d";
   };
 
+  # Reach every host over the tailnet; no dependency on local subnet routing.
+  services.tailscale.enable = true;
+
   # Enable Nix daemon (disabled in latest update)
   # services.nix-daemon.enable = true;
 
