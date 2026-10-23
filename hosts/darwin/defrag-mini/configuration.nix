@@ -1,15 +1,18 @@
 { userConfig, ... }: {
+  system.primaryUser = userConfig.name;
+
   # User configuration
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";
-    home = "/Volumes/user-${userConfig.name}";
+    home = "/Users/${userConfig.name}";
   };
 
-  # Headless access over the tailnet; Tailscale itself is enabled in common-darwin.nix.
+  # Headless access over the tailnet.
   services.openssh.enable = true;
+  services.tailscale.enable = true;
 
-  # Screenshots stay next to the home directory on the external volume.
-  system.defaults.screencapture.location = "/Volumes/user-${userConfig.name}/Downloads/temp";
+  # Screenshots to the Desktop; this host's home is on the internal volume.
+  system.defaults.screencapture.location = "/Users/${userConfig.name}/Desktop";
 
   # Used for backwards compatibility, please read the changelog before changing.
   system.stateVersion = 5;

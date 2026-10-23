@@ -1,19 +1,18 @@
-{...}: {
+{ ... }: {
   imports = [
-    ../modules/common.nix
-    ../modules/darwin-aerospace.nix
+    ../modules/home.nix
+    ../modules/zsh.nix
+    ../modules/git.nix
+    ../modules/gpg.nix
+    ../modules/direnv.nix
+    ../modules/tmux.nix
+    ../modules/btop.nix
+    ../modules/fzf.nix
+    ../modules/lazygit.nix
   ];
 
   # Enable home-manager
   programs.home-manager.enable = true;
-
-  # Ensure homebrew is in the PATH
-  home.sessionPath = [
-    "/opt/homebrew/bin/"
-  ];
-
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "24.05";
