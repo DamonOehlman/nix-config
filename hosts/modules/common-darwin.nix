@@ -41,12 +41,16 @@
   # System settings
   system = {
     defaults = {
-      ".GlobalPreferences" = { "com.apple.mouse.scaling" = -1.0; };
+      # -1.0 disables acceleration (1:1 with DPI) and feels slow on a
+      # retina display with an MX Master. 2.5 matches the trackpad slider
+      # near the top of System Settings → Mouse (max 3.0).
+      ".GlobalPreferences" = { "com.apple.mouse.scaling" = 2.5; };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
         ApplePressAndHoldEnabled = false;
         AppleShowAllExtensions = true;
         KeyRepeat = 2;
+        "com.apple.trackpad.scaling" = 2.5;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
@@ -79,7 +83,7 @@
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
-        persistent-apps = [ "/Applications/Arc.app" ];
+        persistent-apps = [ "/Applications/Brave Browser.app" ];
         tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;

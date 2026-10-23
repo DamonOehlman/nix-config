@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   # Source aerospace config from the home-manager store
   home.file.".aerospace.toml".text = ''
     after-login-command = []
@@ -17,8 +17,9 @@
     #     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
     # ]
 
-    # Start AeroSpace at login
-    start-at-login = true
+    # launchd (below) starts AeroSpace. If this is true the app also
+    # registers its own login item after the first launch, and the two fight.
+    start-at-login = false
 
     # Automatically reload the config when it changes. home-manager swaps
     # ~/.aerospace.toml for a new store symlink on every switch, so without
@@ -176,6 +177,13 @@
     if.app-id = 'company.thebrowser.Browser'
     run = ['move-node-to-workspace 3']
 
+    # Primary Brave profile lands on 4. A second profile window is moved to 3
+    # with cmd-shift-3 — Chromium titles are often unset when this callback
+    # fires, so a title regex cannot tell the profiles apart reliably.
+    [[on-window-detected]]
+    if.app-id = 'com.brave.Browser'
+    run = ['move-node-to-workspace 4']
+
     [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace 2']
@@ -200,4 +208,32 @@
     if.app-id = 'com.apple.iphonesimulator'
     run = ['layout floating']
   '';
+
+  # Homebrew installs the .app at a stable /Applications path, which is what
+  # macOS Accessibility TCC is keyed on. start-at-login in the toml only
+  # writes a login item after the app has been launched once — it never was
+  # on this machine, so the server was simply not running.
+  launchd.agents.aerospace = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/Applications/AeroSpace.app/Contents/MacOS/AeroSpace" ];
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/aerospace.log";
+      StandardErrorPath = "/tmp/aerospace.err.log";
+    };
+  };
+
+  # Gatekeeper rejects the Homebrew-cask copy while quarantine xattrs remain
+  # (spctl --assess: rejected). Strip them on every switch; cask upgrades
+  # put them back.
+  home.activation.clearAerospaceQuarantine =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ -d /Applications/AeroSpace.app ]; then
+        # FinderInfo leftover from migration/Time Machine makes codesign
+        # --verify fail with "resource fork, Finder information, or similar
+        # detritus not allowed" and Gatekeeper report the bundle as rejected.
+        /usr/bin/xattr -cr /Applications/AeroSpace.app 2>/dev/null || true
+      fi
+    '';
 }
