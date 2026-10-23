@@ -133,7 +133,7 @@
       darwinConfigurations = {
         "defrag-mini" = mkDarwinBuildHost "defrag-mini" "damo";
         "defrag-air" = mkDarwinConfiguration "defrag-air" "damo";
-        "djo-primary" = mkDarwinConfiguration "djo-primary" "damo";
+        "defrag-primary" = mkDarwinConfiguration "defrag-primary" "damo";
         "djo-affectable" = mkDarwinConfiguration "djo-affectable" "damo";
       };
 
@@ -153,10 +153,10 @@
           hostname = "defrag-air";
           homeDirectory = "/Users/damo";
         };
-        "damo@djo-primary" = mkHomeConfiguration {
+        "damo@defrag-primary" = mkHomeConfiguration {
           system = "aarch64-darwin";
           username = "damo";
-          hostname = "djo-primary";
+          hostname = "defrag-primary";
           homeDirectory = "/Users/damo";
         };
         "damo@djo-affectable" = mkHomeConfiguration {
