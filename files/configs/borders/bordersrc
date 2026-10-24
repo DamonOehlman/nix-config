@@ -1,0 +1,10 @@
+#!/bin/bash
+# Catppuccin Frappé: sapphire active, surface0 inactive.
+options=(
+  style=round
+  width=5.0
+  hidpi=on
+  active_color=0xff85c1dc
+  inactive_color=0xff414559
+)
+borders "${options[@]}"

@@ -59,6 +59,31 @@
         NSDocumentSaveNewDocumentsToCloud = false;
         NSNavPanelExpandedStateForSaveMode = true;
         PMPrintingExpandedStateForPrint = true;
+        # SketchyBar owns the top of the screen. Both keys together are
+        # System Settings → Menu Bar → Automatically hide → Always.
+        # (_HIHideMenuBar alone is "On Desktop Only" and still shows the
+        # native extras on an external display.)
+        _HIHideMenuBar = true;
+        AppleMenuBarVisibleInFullscreen = false;
+        # ctrl+cmd drag a window from anywhere, not just the titlebar.
+        NSWindowShouldDragOnGesture = true;
+      };
+      # Hide Control Center extras from the menu bar so they don't sit
+      # on top of SketchyBar when the native bar flashes on mouse-to-top.
+      controlcenter = {
+        Sound = false;
+        Bluetooth = false;
+        AirDrop = false;
+        Display = false;
+        FocusModes = false;
+        NowPlaying = false;
+      };
+      # Sequoia/Tahoe native tiling fights AeroSpace.
+      WindowManager = {
+        EnableTilingByEdgeDrag = false;
+        EnableTopTilingByEdgeDrag = false;
+        EnableTilingOptionAccelerator = false;
+        EnableTiledWindowMargins = false;
       };
       LaunchServices = { LSQuarantine = false; };
       trackpad = {
@@ -127,12 +152,15 @@
       "anki"
       "brave-browser"
       "discord"
-      "dozer"
       "raycast"
       # "android-platform-tools"
       # "android-studio"
       "gcloud-cli"
       "zed"
+      # Font cask (not the formulae) — Homebrew bottles for sketchybar /
+      # borders fail to build on macOS 27 without Xcode 27 CLT, so those
+      # binaries come from nixpkgs instead.
+      "font-sketchybar-app-font"
     ];
     taps = [ "nikitabobko/tap" "hudochenkov/sshpass" ];
     onActivation.cleanup = "check";

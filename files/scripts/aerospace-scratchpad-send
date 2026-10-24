@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Send the focused window to the AeroSpace scratchpad.
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:$HOME/.local/bin:/usr/bin:/bin"
+
+if aerospace-scratchpad move >/dev/null 2>&1; then
+  exit 0
+fi
+
+wid="$(aerospace list-windows --focused --format '%{window-id}')"
+[[ -n "$wid" ]] || exit 1
+aerospace-scratchpad move ".+" -F "window-id=^${wid}$"
