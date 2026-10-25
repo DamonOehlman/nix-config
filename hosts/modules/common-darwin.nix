@@ -149,6 +149,7 @@
   homebrew = {
     enable = true;
     brews = [
+      "container"
       "hcloud"
       "hudochenkov/sshpass/sshpass"
     ];

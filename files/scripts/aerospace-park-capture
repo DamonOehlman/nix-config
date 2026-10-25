@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Park a capture's window in the scratchpad as AeroSpace detects it.
+# Park an automated run's window in the scratchpad as AeroSpace detects it.
 #
 # The kit appends "[capture]" to the window title for a --shot/--sheet/--sprites/
-# --plan run (macroquad_gamekit::harness::CAPTURE_TITLE_MARKER), and the
-# on-window-detected rule matches that title. An interactive run has no marker
-# and is left tiled. This script does the part the config cannot: the scratchpad
-# is per monitor, and AeroSpace's workspace-name arguments do not interpolate
-# %{monitor-id}.
+# --plan run (macroquad_gamekit::harness::CAPTURE_TITLE_MARKER), and "[soak]"
+# for a --soak run (SOAK_TITLE_MARKER). The on-window-detected rule matches
+# either title. An interactive run has no marker and is left tiled. This script
+# does the part the config cannot: the scratchpad is per monitor, and
+# AeroSpace's workspace-name arguments do not interpolate %{monitor-id}.
 #
 # AeroSpace sets AEROSPACE_WINDOW_ID for the callback, and the callback passes
 # it as $1. No id means the process has already gone, so there is nothing to do.

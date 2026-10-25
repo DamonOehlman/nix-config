@@ -240,13 +240,13 @@
     if.app-id = 'com.apple.iphonesimulator'
     run = ['layout floating']
 
-    # A capture still opens a window, and the kit marks it while it runs:
-    # `Args::window_title` appends "[capture]" for --shot/--sheet/--sprites/
-    # --plan. Park only an unbundled binary carrying that marker, so a
-    # one-second window cannot retile the focused workspace while an
-    # interactive run, or a normal app with "[capture]" in a filename, stays.
+    # A capture or soak still opens a window, and the kit marks it while it
+    # runs: `Args::window_title` appends "[capture]" for --shot/--sheet/
+    # --sprites/--plan and "[soak]" for --soak. Park only an unbundled binary
+    # carrying one of those markers, so an interactive run, or a normal app
+    # with the word in a filename, stays where it is.
     [[on-window-detected]]
-    if = 'test %{window-title} ~= \[capture\] && test %{app-bundle-id} = NULL-APP-BUNDLE-ID'
+    if = 'test %{window-title} ~= \[(capture|soak)\] && test %{app-bundle-id} = NULL-APP-BUNDLE-ID'
     run = ['layout floating', 'exec-and-forget aerospace-park-capture "$AEROSPACE_WINDOW_ID"']
   '';
 
