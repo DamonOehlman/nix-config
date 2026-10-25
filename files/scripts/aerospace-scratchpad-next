@@ -2,4 +2,5 @@
 # Cycle / show the next scratchpad window on the current workspace.
 set -euo pipefail
 export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:$HOME/.local/bin:/usr/bin:/bin"
-aerospace-scratchpad next
+LOG="${TMPDIR:-/tmp}/aerospace-scratchpad.log"
+aerospace-scratchpad next >>"$LOG" 2>&1 || true

@@ -129,7 +129,7 @@
     # Scratchpad: send focused window, cycle/show next, hide all floating.
     cmd-enter = 'exec-and-forget aerospace-scratchpad-next'
     cmd-shift-enter = 'exec-and-forget aerospace-scratchpad-send'
-    cmd-shift-minus = 'exec-and-forget aerospace-scratchpad move --all-floating'
+    cmd-shift-minus = 'exec-and-forget aerospace-scratchpad-hide'
 
     # Disable macOS hide-app; it orphans windows from the tiling tree.
     cmd-h = []
