@@ -64,9 +64,14 @@
         # (_HIHideMenuBar alone is "On Desktop Only" and still shows the
         # native extras on an external display.)
         _HIHideMenuBar = true;
-        AppleMenuBarVisibleInFullscreen = false;
         # ctrl+cmd drag a window from anywhere, not just the titlebar.
         NSWindowShouldDragOnGesture = true;
+      };
+      # The other half of that pair. `AppleMenuBarVisibleInFullscreen` was a typed
+      # option until nix-darwin removed it; setting it through the escape hatch keeps
+      # the "Always" behaviour the comment above describes.
+      CustomUserPreferences = {
+        "NSGlobalDomain" = { AppleMenuBarVisibleInFullscreen = false; };
       };
       # Hide Control Center extras from the menu bar so they don't sit
       # on top of SketchyBar when the native bar flashes on mouse-to-top.
