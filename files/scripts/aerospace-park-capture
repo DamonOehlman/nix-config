@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Park a capture's window in the scratchpad as AeroSpace detects it.
+#
+# The kit appends "[capture]" to the window title for a --shot/--sheet/--sprites/
+# --plan run (macroquad_gamekit::harness::CAPTURE_TITLE_MARKER), and the
+# on-window-detected rule matches that title. An interactive run has no marker
+# and is left tiled. This script does the part the config cannot: the scratchpad
+# is per monitor, and AeroSpace's workspace-name arguments do not interpolate
+# %{monitor-id}.
+#
+# AeroSpace sets AEROSPACE_WINDOW_ID for the callback, and the callback passes
+# it as $1. No id means the process has already gone, so there is nothing to do.
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:$HOME/.local/bin:/usr/bin:/bin"
+
+wid="${1:-${AEROSPACE_WINDOW_ID:-}}"
+[[ -n "$wid" ]] || exit 0
+
+mid="$(aerospace echo --window-id "$wid" -- '%{monitor-id}' 2>/dev/null || true)"
+[[ -n "$mid" ]] || exit 0
+
+# Floating first, so the window behaves like the other scratchpad windows when
+# it is summoned. Do not use `aerospace-scratchpad move`: it summons the
+# scratchpad workspace, and the workspace-change hook then pulls the window
+# straight back to the workspace that was just left.
+aerospace layout floating --window-id "$wid" || true
+aerospace move-node-to-workspace --window-id "$wid" -- ".scratchpad.${mid}"

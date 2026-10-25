@@ -1,5 +1,5 @@
 { ... }: {
-  imports = [ ../modules/common.nix ../modules/darwin-aerospace.nix ];
+  imports = [ ../modules/common.nix ../modules/darwin-aerospace.nix ../modules/agent-tools.nix ];
 
   # Enable home-manager
   programs.home-manager.enable = true;

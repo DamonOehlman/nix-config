@@ -4,6 +4,7 @@
     ../modules/easyeffects.nix
     ../modules/hyprland.nix
     ../modules/ulauncher.nix
+    ../modules/agent-tools.nix
   ];
 
   # Enable home-manager

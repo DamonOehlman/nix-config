@@ -239,6 +239,15 @@
     [[on-window-detected]]
     if.app-id = 'com.apple.iphonesimulator'
     run = ['layout floating']
+
+    # A capture still opens a window, and the kit marks it while it runs:
+    # `Args::window_title` appends "[capture]" for --shot/--sheet/--sprites/
+    # --plan. Park only an unbundled binary carrying that marker, so a
+    # one-second window cannot retile the focused workspace while an
+    # interactive run, or a normal app with "[capture]" in a filename, stays.
+    [[on-window-detected]]
+    if = 'test %{window-title} ~= \[capture\] && test %{app-bundle-id} = NULL-APP-BUNDLE-ID'
+    run = ['layout floating', 'exec-and-forget aerospace-park-capture "$AEROSPACE_WINDOW_ID"']
   '';
 
   # Homebrew installs the .app at a stable /Applications path, which is what

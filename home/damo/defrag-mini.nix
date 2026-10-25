@@ -9,6 +9,7 @@
     ../modules/btop.nix
     ../modules/fzf.nix
     ../modules/lazygit.nix
+    ../modules/agent-tools.nix
   ];
 
   # Enable home-manager
