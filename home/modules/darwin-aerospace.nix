@@ -1,24 +1,31 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config, ... }: {
+  imports = [ ./darwin-sketchybar.nix ];
+
   # Source aerospace config from the home-manager store
   home.file.".aerospace.toml".text = ''
+    config-version = 2
+
     after-login-command = []
 
     # You can use it to add commands that run after AeroSpace startup.
     # 'after-startup-command' is run after 'after-login-command'
     # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-    # Run Sketchybar together with AeroSpace
-    # sketchbar has a built-in detection of already running process,
-    # so it won't be run twice on AeroSpace restart
-    # after-startup-command = ['exec-and-forget sketchybar']
+    # SketchyBar and JankyBorders also have launchd agents; both detect an
+    # already-running process so a double start is a no-op.
+    after-startup-command = [
+        'exec-and-forget sketchybar',
+        'exec-and-forget borders',
+    ]
 
-    # exec-on-workspace-change = [
-    #     '/bin/bash',
-    #     '-c',
-    #     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
-    # ]
+    exec-on-workspace-change = [
+        '/bin/bash',
+        '-c',
+        'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$AEROSPACE_FOCUSED_WORKSPACE"; aerospace-scratchpad hook pull-window "$AEROSPACE_PREV_WORKSPACE" "$AEROSPACE_FOCUSED_WORKSPACE" || true',
+    ]
 
-    # Start AeroSpace at login
-    start-at-login = true
+    # launchd (below) starts AeroSpace. If this is true the app also
+    # registers its own login item after the first launch, and the two fight.
+    start-at-login = false
 
     # Automatically reload the config when it changes. home-manager swaps
     # ~/.aerospace.toml for a new store symlink on every switch, so without
@@ -49,16 +56,30 @@
     # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
     # Fallback value (if you omit the key): on-focused-monitor-changed = []
     on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+    on-focus-changed = ['exec-and-forget sketchybar --trigger aerospace_focus_change']
+    on-mode-changed = ['exec-and-forget sketchybar --trigger aerospace_mode_change']
 
     # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
     # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
     # Also see: https://nikitabobko.github.io/AeroSpace/goodness#disable-hide-app
     automatically-unhide-macos-hidden-apps = false
 
+    # Keep 1-9 alive so SketchyBar always has a slot, even when empty.
+    # Scratchpad workspaces (`.scratchpad`) are managed by aerospace-scratchpad.
+    persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
     # Possible values: (qwerty|dvorak)
     # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
     [key-mapping]
     preset = 'qwerty'
+
+    # launchd AeroSpace has a minimal PATH; exec-and-forget and the
+    # workspace-change hook need Homebrew plus ~/.local/bin wrappers.
+    [exec]
+    inherit-env-vars = true
+
+    [exec.env-vars]
+    PATH = '/opt/homebrew/bin:${config.home.profileDirectory}/bin:${config.home.homeDirectory}/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
 
     # Gaps between windows (inner-*) and between monitor edges (outer-*).
     # Possible values:
@@ -68,11 +89,13 @@
     #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
     #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
     [gaps]
-    inner.horizontal = 4
-    inner.vertical = 4
+    inner.horizontal = 8
+    inner.vertical = 8
     outer.left = 4
     outer.bottom = 4
-    outer.top = 4
+    # Native menu bar still insets ~30px even when SketchyBar covers it
+    # (topmost=on). 8px on top of that is a small gap under the bar.
+    outer.top = 8
     outer.right = 4
 
     # 'main' binding mode declaration
@@ -103,15 +126,25 @@
     # rule below would never match it.
     cmd-alt-enter = 'exec-and-forget open -na ${pkgs.alacritty}/Applications/Alacritty.app'
 
+    # Scratchpad: send focused window, cycle/show next, hide all floating.
+    cmd-enter = 'exec-and-forget aerospace-scratchpad-next'
+    cmd-shift-enter = 'exec-and-forget aerospace-scratchpad-send'
+    cmd-shift-minus = 'exec-and-forget aerospace-scratchpad-hide'
+
+    # Disable macOS hide-app; it orphans windows from the tiling tree.
+    cmd-h = []
+    cmd-alt-h = []
+
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'
+    alt-f = 'fullscreen'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-    cmd-left = 'focus left'
-    cmd-down = 'focus down'
-    cmd-up = 'focus up'
-    cmd-right = 'focus right'
+    cmd-left = 'focus --boundaries-action wrap-around-the-workspace left'
+    cmd-down = 'focus --boundaries-action wrap-around-the-workspace down'
+    cmd-up = 'focus --boundaries-action wrap-around-the-workspace up'
+    cmd-right = 'focus --boundaries-action wrap-around-the-workspace right'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move
     alt-shift-h = 'move left'
@@ -146,9 +179,9 @@
     cmd-shift-9 = 'move-node-to-workspace 9'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-    # alt-tab = 'workspace-back-and-forth'
+    alt-tab = 'workspace-back-and-forth'
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-    # alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-semicolon = 'mode service'
@@ -176,6 +209,13 @@
     if.app-id = 'company.thebrowser.Browser'
     run = ['move-node-to-workspace 3']
 
+    # Primary Brave profile lands on 4. A second profile window is moved to 3
+    # with cmd-shift-3 — Chromium titles are often unset when this callback
+    # fires, so a title regex cannot tell the profiles apart reliably.
+    [[on-window-detected]]
+    if.app-id = 'com.brave.Browser'
+    run = ['move-node-to-workspace 4']
+
     [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace 2']
@@ -199,5 +239,42 @@
     [[on-window-detected]]
     if.app-id = 'com.apple.iphonesimulator'
     run = ['layout floating']
+
+    # A capture or soak still opens a window, and the kit marks it while it
+    # runs: `Args::window_title` appends "[capture]" for --shot/--sheet/
+    # --sprites/--plan and "[soak]" for --soak. Park only an unbundled binary
+    # carrying one of those markers, so an interactive run, or a normal app
+    # with the word in a filename, stays where it is.
+    [[on-window-detected]]
+    if = 'test %{app-bundle-id} = NULL-APP-BUNDLE-ID && (test %{window-title} ~= capture || test %{window-title} ~= soak)'
+    run = ['layout floating', 'exec-and-forget aerospace-park-capture "$AEROSPACE_WINDOW_ID"']
   '';
+
+  # Homebrew installs the .app at a stable /Applications path, which is what
+  # macOS Accessibility TCC is keyed on. start-at-login in the toml only
+  # writes a login item after the app has been launched once — it never was
+  # on this machine, so the server was simply not running.
+  launchd.agents.aerospace = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/Applications/AeroSpace.app/Contents/MacOS/AeroSpace" ];
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/aerospace.log";
+      StandardErrorPath = "/tmp/aerospace.err.log";
+    };
+  };
+
+  # Gatekeeper rejects the Homebrew-cask copy while quarantine xattrs remain
+  # (spctl --assess: rejected). Strip them on every switch; cask upgrades
+  # put them back.
+  home.activation.clearAerospaceQuarantine =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ -d /Applications/AeroSpace.app ]; then
+        # FinderInfo leftover from migration/Time Machine makes codesign
+        # --verify fail with "resource fork, Finder information, or similar
+        # detritus not allowed" and Gatekeeper report the bundle as rejected.
+        /usr/bin/xattr -cr /Applications/AeroSpace.app 2>/dev/null || true
+      fi
+    '';
 }

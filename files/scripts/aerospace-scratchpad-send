@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Send the focused window to this monitor's scratchpad.
+# Do not use `aerospace-scratchpad move`: it summons `.scratchpad.N`, which
+# fires `hook pull-window` and yanks the window straight back.
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:$HOME/.local/bin:/usr/bin:/bin"
+LOG="${TMPDIR:-/tmp}/aerospace-scratchpad.log"
+
+wid="$(aerospace list-windows --focused --format '%{window-id}')"
+[[ -n "$wid" ]] || exit 1
+mid="$(aerospace list-windows --focused --format '%{monitor-id}')"
+ws=".scratchpad.${mid}"
+
+{
+  echo "$(date '+%H:%M:%S') send wid=$wid mid=$mid ws=$ws"
+  aerospace layout floating --window-id "$wid" || true
+  aerospace move-node-to-workspace --window-id "$wid" -- "$ws"
+} >>"$LOG" 2>&1

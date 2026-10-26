@@ -1,0 +1,314 @@
+#!/usr/bin/env bash
+#
+# playbook-sync — one command to bring every playbook consumer up to date.
+#
+# Three locks stand between a repository and a rule or skill change, and each link has to move:
+#
+#   <repo>/flake.lock → defrag-nix <rev> → defrag-nix/flake.lock → agent-playbook <rev>
+#
+# Nobody remembers that chain, so this does it, per repository, in order:
+#
+#   1. `nix flake update defrag-nix`     the tool, when the repository takes that input
+#   2. `playbook check` → `install`      the managed block, when the composed block differs
+#   3. `playbook skills check` → `sync`  the delivered skills, when the lock or a tree differs
+#
+# then the global personal catalogue, which delivers into ~/.agents/skills and ~/.claude/skills.
+#
+# The repositories are **discovered, not listed**: every `<root>/<org>/<repo>` holding a
+# `.playbook/project.conf` is a consumer. That is the whole point of the inversion — there is no
+# registry to keep in step, and a new repository joins by having a manifest. `agent-playbook`
+# itself is not in the list: it has no manifest of its own, deliberately — it is the package, and a
+# package that resolved its own rules would have to ship the answer with the question.
+#
+# The tool itself comes from defrag-nix, never from the repository being checked. defrag-nix is the
+# ingestion point: it is where `agent-playbook` is pinned, so it is where a rule or skill change
+# lands first. Running its copy also means a consumer with no devshell of its own is still checked,
+# which is why `--repo` is passed rather than relying on the working directory.
+#
+# It writes files and never touches git. Review with `at-recall state`, then commit per repository.
+#
+#   playbook-sync                 do it
+#   playbook-sync --dry-run       say what would change, write nothing
+#   playbook-sync --no-pin        leave the flake locks alone
+#   playbook-sync --no-global     leave the personal catalogue alone
+#
+# Dependencies: nix, direnv, and the playbook from the devshell. `PLAYBOOK_ESTATE`,
+# `DEFRAG_NIX` and `PLAYBOOK_PERSONAL` override the three default paths.
+
+set -euo pipefail
+
+root="${PLAYBOOK_ESTATE:-$HOME/code}"
+defrag_nix="${DEFRAG_NIX:-$HOME/code/defrag/defrag-nix}"
+catalogue="${PLAYBOOK_PERSONAL:-$HOME/code/DamonOehlman/fleet/personal}"
+
+dry_run=0
+pin=1
+global=1
+prune=0
+
+usage() {
+  cat <<'EOF'
+usage: playbook-sync [--dry-run] [--no-pin] [--no-global] [--prune] [--root <dir>]
+
+Discovers every `<root>/<org>/<repo>` holding a `.playbook/project.conf`, and for each one moves
+the defrag-nix pin (when it takes that input), installs the managed block if it is stale, and
+syncs the declared skills if they have drifted. Then the global personal catalogue.
+
+  --dry-run     say what would change and write nothing; the pin is judged against the local
+                defrag-nix checkout, since a dry run asks no network
+  --no-pin      leave flake.lock alone
+  --no-global   leave the personal catalogue alone
+  --prune       drop a delivered skill the catalogue no longer declares
+  --root <dir>  where the checkouts live (default $HOME/code, or $PLAYBOOK_ESTATE)
+
+Nothing is committed.
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    -n | --dry-run) dry_run=1 ;;
+    --no-pin) pin=0 ;;
+    --no-global) global=0 ;;
+    --prune) prune=1 ;;
+    --root)
+      shift
+      root="${1:?--root needs a directory}"
+      ;;
+    -*)
+      echo "playbook-sync: unknown option '$1'" >&2
+      usage >&2
+      exit 2
+      ;;
+    *)
+      echo "playbook-sync: unexpected argument '$1' — repositories are discovered under $root" >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+# Run a command with the tool's devshell loaded.
+#
+# `direnv exec` is first because it renews a realised shell whose flake.lock just changed, which is
+# exactly what step 1 produces — there is no `direnv reload` to remember. `nix develop` is the
+# fallback for a checkout without `.envrc`, and the caller's PATH is the last resort, so a missing
+# tool reports `command not found` rather than being silently skipped.
+in_tool_shell() {
+  if [ -f "$defrag_nix/.envrc" ] && command -v direnv >/dev/null 2>&1; then
+    # `DIRENV_LOG_FORMAT=` silences direnv's own "loading/using/cached" chatter, which would
+    # otherwise land in every report line; the shell hook's banner is the flake's, and the callers
+    # below keep only the lines that say what happened.
+    DIRENV_LOG_FORMAT= direnv exec "$defrag_nix" "$@"
+  elif [ -f "$defrag_nix/flake.nix" ] && command -v nix >/dev/null 2>&1; then
+    ( cd "$defrag_nix" && nix develop -c "$@" )
+  else
+    "$@"
+  fi
+}
+
+# The first line of an output that explains why a check failed. `stale:` and `missing:` come from
+# the composer, `error:` from anything that could not run at all — which a dry run must not present
+# as "drift", because the fix is different.
+reason() {
+  local line
+  line="$(printf '%s\n' "$1" | grep -m1 -E 'error:|missing:|stale:|differs' || true)"
+  [ -n "$line" ] || line="$(printf '%s\n' "$1" | head -n1 || true)"
+  printf '%s\n' "$line" | sed 's/^ *//'
+}
+
+# The revision a repository's lock has for defrag-nix. Empty when it does not take the input —
+# Nix names the node, so an absent node is the only honest test; `flake.nix` mentioning the string
+# proves nothing (defrag-nix names itself, and a repository can mention the input in a comment).
+#
+# The node is found by name and then its own `locked` block is scanned, rather than by reading a
+# fixed number of lines after the name: the number of inputs in the block varies per repository,
+# and a window that is too short silently reports "no pin" for exactly the repositories with the
+# most inputs.
+lock_rev() {
+  awk '
+    /"defrag-nix[a-z0-9_]*": \{/ { node = 1 }
+    node && /"locked": \{/ { locked = 1 }
+    node && locked && /"rev":/ {
+      sub(/.*"rev": "/, "")
+      sub(/".*/, "")
+      print
+      exit
+    }
+  ' "$1/flake.lock" 2>/dev/null || true
+}
+
+say() { report="${report}  $1"$'\n'; }
+
+fail() {
+  status=1
+  repo_failed=1
+  report="${report}  $1 failed"$'\n'
+  report="${report}$(printf '%s\n' "$2" | sed 's/^/      /')"$'\n'
+}
+
+# Step 1. Only a repository whose flake takes the input can move it; agent-playbook itself
+# deliberately does not, because an input back would be a cycle.
+sync_pin() {
+  local repo="$1" before after old here output
+
+  [ "$pin" = 1 ] || return 0
+  [ -f "$repo/flake.lock" ] || return 0
+
+  old="$(lock_rev "$repo")"
+  [ -n "$old" ] || return 0
+
+  if [ "$dry_run" = 1 ]; then
+    # A dry run asks no network, so "current" here means "already at the local defrag-nix
+    # checkout" — and that is only as current as the checkout. A real run asks nix, which is
+    # authoritative, which is why it always runs the update and reports only a change.
+    here="$(git -C "$defrag_nix" rev-parse HEAD 2>/dev/null || true)"
+    if [ -n "$here" ] && [ "$old" = "$here" ]; then
+      return 0
+    fi
+    say "pin      defrag-nix ${old:0:8} → ${here:0:8} — would update"
+    return 0
+  fi
+
+  before="$(cksum <"$repo/flake.lock")"
+  if ! output="$(cd "$repo" && nix flake update defrag-nix 2>&1)"; then
+    fail "pin" "$output"
+    return 0
+  fi
+  after="$(cksum <"$repo/flake.lock")"
+  if [ "$before" != "$after" ]; then
+    here="$(lock_rev "$repo")"
+    say "pin      defrag-nix ${old:0:8} → ${here:0:8}"
+  fi
+}
+
+# Step 2. `check` fails for a stale block, a missing file and a broken manifest alike; installing is
+# the right answer for the first two and fails loudly for the third, which is why its output is
+# what gets reported.
+sync_block() {
+  local repo="$1" output said line
+
+  if output="$(in_tool_shell playbook check --repo "$repo" 2>&1)"; then
+    return 0
+  fi
+
+  if [ "$dry_run" = 1 ]; then
+    say "block    $(reason "$output") — would run \`playbook install\`"
+    return 0
+  fi
+
+  if output="$(in_tool_shell playbook install --repo "$repo" 2>&1)"; then
+    # Only the lines that say what happened. A devshell prints its own banner on the way in, and
+    # repeating it for every stale repository would bury the one line the reader wants.
+    said=0
+    while IFS= read -r line; do
+      case "$line" in
+        created\ * | updated\ * | unchanged\ * | warning:*)
+          say "block    $line"
+          said=1
+          ;;
+      esac
+    done <<<"$output"
+    [ "$said" = 1 ] || say "block    installed"
+  else
+    fail "block" "$output"
+  fi
+}
+
+# Step 3. A manifest that declares no skills exits 0 from `check`, so "nothing to deliver" and
+# "already current" need no special case.
+sync_skills() {
+  local prune_this=0 output written line
+  if [ "${1:-}" = "--prune" ]; then
+    prune_this=1
+    shift
+  fi
+
+  if output="$(in_tool_shell playbook skills check "$@" 2>&1)"; then
+    return 0
+  fi
+
+  if [ "$dry_run" = 1 ]; then
+    say "skills   $(reason "$output") — would run \`playbook skills sync\`"
+    return 0
+  fi
+
+  if [ "$prune_this" = 1 ]; then
+    if ! output="$(in_tool_shell playbook skills sync "$@" --prune 2>&1)"; then
+      fail "skills" "$output"
+      return 0
+    fi
+  else
+    if ! output="$(in_tool_shell playbook skills sync "$@" 2>&1)"; then
+      fail "skills" "$output"
+      return 0
+    fi
+  fi
+
+  written=0
+  while IFS= read -r line; do
+    case "$line" in
+      *written:*) written=$((written + 1)) ;;
+    esac
+  done <<<"$output"
+  if [ "$written" = 0 ]; then
+    say "skills   synced"
+  else
+    say "skills   ${written} delivered"
+  fi
+}
+
+checked=0
+changed=0
+failed=0
+status=0
+
+for manifest in "$root"/*/*/.playbook/project.conf; do
+  [ -f "$manifest" ] || continue
+  repo="$(dirname "$(dirname "$manifest")")"
+  checked=$((checked + 1))
+  report=""
+  repo_failed=0
+
+  sync_pin "$repo"
+  sync_block "$repo"
+  sync_skills --repo "$repo"
+
+  if [ -n "$report" ]; then
+    changed=$((changed + 1))
+    printf '\n%s\n%s' "$repo" "$report"
+  fi
+  if [ "$repo_failed" = 1 ]; then
+    failed=$((failed + 1))
+  fi
+done
+
+if [ "$global" = 1 ]; then
+  if [ -f "$catalogue/.playbook/project.conf" ]; then
+    report=""
+    repo_failed=0
+    if [ "$prune" = 1 ]; then
+      sync_skills --prune --manifest "$catalogue"
+    else
+      sync_skills --manifest "$catalogue"
+    fi
+    if [ -n "$report" ]; then
+      printf '\n%s\n%s' "$catalogue" "$report"
+    fi
+    if [ "$repo_failed" = 1 ]; then
+      failed=$((failed + 1))
+    fi
+  else
+    echo "playbook-sync: no catalogue at $catalogue/.playbook/project.conf — skipped" >&2
+  fi
+fi
+
+printf '\n%d repositories · %d with changes · %d failed\n' "$checked" "$changed" "$failed"
+if [ "$dry_run" = 1 ]; then
+  echo "dry run — nothing was written"
+fi
+exit "$status"

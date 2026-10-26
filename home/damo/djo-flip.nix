@@ -9,6 +9,7 @@
     ../modules/btop.nix
     ../modules/fzf.nix
     ../modules/lazygit.nix
+    ../modules/agent-tools.nix
   ];
 
   # Omarchy owns the desktop (Hyprland, Waybar, ...). Home Manager only

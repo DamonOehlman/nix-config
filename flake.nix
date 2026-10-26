@@ -17,6 +17,15 @@
     # Global catppuccin theme
     catppuccin.url = "github:catppuccin/nix";
 
+    # Agent tooling: the at-* inspectors and browser-shot. `playbook` is deliberately
+    # not taken from here — see home/modules/agent-tools.nix. `nixpkgs.follows` so the
+    # tools are built by this flake's nixpkgs rather than a second copy of it, the same
+    # arrangement defrag-nix uses for the same input.
+    agent-playbook = {
+      url = "github:defrag-au/agent-playbook";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Nix Darwin (for MacOS machines)
     darwin = {
       url = "github:LnL7/nix-darwin";

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Hide every floating window into its monitor scratchpad.
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:$HOME/.local/bin:/usr/bin:/bin"
+LOG="${TMPDIR:-/tmp}/aerospace-scratchpad.log"
+
+echo "$(date '+%H:%M:%S') hide-all-floating" >>"$LOG"
+aerospace list-windows --all --format '%{window-id}|%{window-layout}|%{monitor-id}' \
+  | while IFS='|' read -r wid layout mid; do
+      [[ "$layout" == "floating" ]] || continue
+      [[ -n "$wid" && -n "$mid" ]] || continue
+      aerospace move-node-to-workspace --window-id "$wid" -- ".scratchpad.${mid}" >>"$LOG" 2>&1 || true
+    done

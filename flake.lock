@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "agent-playbook": {
+      "inputs": {
+        "fenix": "fenix",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792971110,
+        "narHash": "sha256-xRtkhcUqciW4GzddE/FSl2pDe0SIvANBkn/QQZDVTRg=",
+        "owner": "defrag-au",
+        "repo": "agent-playbook",
+        "rev": "46e7d90f7961820a6cce41bb6e3e85702af2199a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "defrag-au",
+        "repo": "agent-playbook",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -52,6 +73,28 @@
       "original": {
         "owner": "LnL7",
         "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "fenix": {
+      "inputs": {
+        "nixpkgs": [
+          "agent-playbook",
+          "nixpkgs"
+        ],
+        "rust-analyzer-src": "rust-analyzer-src"
+      },
+      "locked": {
+        "lastModified": 1789993672,
+        "narHash": "sha256-qA/oQtTGQwZeTjTFTw+SRfzTY/PHSA6M2S88/Luzsqw=",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "73f890f7eff7cd61f9f24d476349aeee818c22f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "fenix",
         "type": "github"
       }
     },
@@ -214,6 +257,7 @@
     },
     "root": {
       "inputs": {
+        "agent-playbook": "agent-playbook",
         "catppuccin": "catppuccin",
         "darwin": "darwin",
         "hardware": "hardware",
@@ -222,6 +266,23 @@
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-stable": "nixpkgs-stable"
+      }
+    },
+    "rust-analyzer-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789905013,
+        "narHash": "sha256-EKsvvSydG/DQnd6diQhQhrhJs1pzPWTDoHA36RO8nWk=",
+        "owner": "rust-lang",
+        "repo": "rust-analyzer",
+        "rev": "aaddfb73fd95f2c0bf001b474dca91ae28bcce3a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rust-lang",
+        "ref": "nightly",
+        "repo": "rust-analyzer",
+        "type": "github"
       }
     }
   },

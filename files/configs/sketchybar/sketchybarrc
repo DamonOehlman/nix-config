@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+export PATH="/opt/homebrew/bin:$HOME/.nix-profile/bin:/usr/bin:/bin"
+
+CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# shellcheck source=/dev/null
+source "$CONFIG_DIR/colors.sh"
+
+# nixpkgs nerd-fonts 3.x PostScript family is "JetBrainsMono NF".
+FONT="JetBrainsMono NF"
+APP_FONT="sketchybar-app-font"
+
+# Opaque full-width bar at y=0. topmost=on is kCGStatusWindowLevel (25),
+# which sits above the native menu bar (layer 24). topmost=window is only
+# kCGFloatingWindowLevel (3) and the Tahoe menu bar paints over it — that
+# was the mashed "numbers stuck in the system menu bar" look. Margin/offset
+# of 0 so the 30px native bar cannot peek above us on the MSI.
+sketchybar --bar \
+  height=32 \
+  position=top \
+  sticky=on \
+  padding_left=10 \
+  padding_right=10 \
+  color=$CRUST \
+  border_color=$SURFACE0 \
+  border_width=0 \
+  blur_radius=0 \
+  corner_radius=0 \
+  y_offset=0 \
+  margin=0 \
+  shadow=off \
+  topmost=on \
+  display=all
+
+sketchybar --default \
+  icon.font="$FONT:Bold:14.0" \
+  label.font="$FONT:Bold:13.0" \
+  icon.color=$TEXT \
+  label.color=$TEXT \
+  padding_left=4 \
+  padding_right=4 \
+  icon.padding_left=4 \
+  icon.padding_right=4 \
+  label.padding_left=2 \
+  label.padding_right=6 \
+  background.height=24 \
+  background.corner_radius=6 \
+  background.color=$SURFACE0 \
+  background.drawing=off
+
+sketchybar --add event aerospace_workspace_change
+sketchybar --add event aerospace_focus_change
+sketchybar --add event aerospace_mode_change
+
+if command -v aerospace >/dev/null 2>&1; then
+  for sid in $(aerospace list-workspaces --all 2>/dev/null); do
+    case "$sid" in
+      [1-9]) ;;
+      *) continue ;;
+    esac
+    sketchybar --add item space.$sid left \
+      --subscribe space.$sid aerospace_workspace_change aerospace_focus_change \
+      --set space.$sid \
+        icon="$sid" \
+        icon.font="$FONT:Bold:14.0" \
+        label.font="$APP_FONT:Regular:14.0" \
+        icon.padding_left=6 \
+        icon.padding_right=2 \
+        label.padding_left=1 \
+        label.padding_right=6 \
+        padding_left=1 \
+        padding_right=1 \
+        background.drawing=off \
+        click_script="aerospace workspace $sid" \
+        script="$PLUGIN_DIR/aerospace.sh $sid"
+  done
+fi
+
+sketchybar --add item aerospace_mode left \
+  --subscribe aerospace_mode aerospace_mode_change \
+  --set aerospace_mode \
+    drawing=off \
+    icon="󰀝" \
+    label="service" \
+    icon.color=$CRUST \
+    label.color=$CRUST \
+    background.drawing=on \
+    background.color=$PEACH \
+    script="$PLUGIN_DIR/aerospace_mode.sh"
+
+sketchybar --add item front_app left \
+  --subscribe front_app aerospace_focus_change aerospace_workspace_change \
+  --set front_app \
+    icon.drawing=off \
+    label.font="$FONT:Bold:13.0" \
+    padding_left=10 \
+    script="$PLUGIN_DIR/front_app.sh"
+
+# Hidden poller so workspace app-icons catch up when windows open
+# without a focus change.
+sketchybar --add item aerospace_refresh e \
+  --set aerospace_refresh \
+    drawing=off \
+    updates=on \
+    update_freq=5 \
+    script="$PLUGIN_DIR/aerospace_refresh.sh"
+
+sketchybar --add item clock right \
+  --set clock \
+    icon="󰥔" \
+    update_freq=10 \
+    script="$PLUGIN_DIR/clock.sh"
+
+# Mirrors the menu bar's "Stop Recording" control, which SketchyBar covers.
+# macOS starts the Screenshot toolbar's recording pre-roll as soon as the
+# toolbar opens in video mode, so this appears whenever there is a recording
+# to stop — the same condition as the native item.
+sketchybar --add item recording right \
+  --set recording \
+    drawing=off \
+    icon="󰓛" \
+    icon.color=$RED \
+    label="REC" \
+    label.color=$RED \
+    update_freq=2 \
+    script="$PLUGIN_DIR/recording.sh" \
+    click_script="$PLUGIN_DIR/recording_stop.sh"
+
+sketchybar --add item battery right \
+  --subscribe battery system_woke power_source_change \
+  --set battery \
+    update_freq=30 \
+    script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --add item volume right \
+  --subscribe volume volume_change \
+  --set volume \
+    script="$PLUGIN_DIR/volume.sh"
+
+sketchybar --add item cpu right \
+  --set cpu \
+    icon="󰻠" \
+    update_freq=5 \
+    script="$PLUGIN_DIR/cpu.sh"
+
+sketchybar --update

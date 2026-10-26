@@ -41,12 +41,16 @@
   # System settings
   system = {
     defaults = {
-      ".GlobalPreferences" = { "com.apple.mouse.scaling" = -1.0; };
+      # -1.0 disables acceleration (1:1 with DPI) and feels slow on a
+      # retina display with an MX Master. 2.5 matches the trackpad slider
+      # near the top of System Settings → Mouse (max 3.0).
+      ".GlobalPreferences" = { "com.apple.mouse.scaling" = 2.5; };
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
         ApplePressAndHoldEnabled = false;
         AppleShowAllExtensions = true;
         KeyRepeat = 2;
+        "com.apple.trackpad.scaling" = 2.5;
         NSAutomaticCapitalizationEnabled = false;
         NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
@@ -55,6 +59,36 @@
         NSDocumentSaveNewDocumentsToCloud = false;
         NSNavPanelExpandedStateForSaveMode = true;
         PMPrintingExpandedStateForPrint = true;
+        # SketchyBar owns the top of the screen. Both keys together are
+        # System Settings → Menu Bar → Automatically hide → Always.
+        # (_HIHideMenuBar alone is "On Desktop Only" and still shows the
+        # native extras on an external display.)
+        _HIHideMenuBar = true;
+        # ctrl+cmd drag a window from anywhere, not just the titlebar.
+        NSWindowShouldDragOnGesture = true;
+      };
+      # The other half of that pair. `AppleMenuBarVisibleInFullscreen` was a typed
+      # option until nix-darwin removed it; setting it through the escape hatch keeps
+      # the "Always" behaviour the comment above describes.
+      CustomUserPreferences = {
+        "NSGlobalDomain" = { AppleMenuBarVisibleInFullscreen = false; };
+      };
+      # Hide Control Center extras from the menu bar so they don't sit
+      # on top of SketchyBar when the native bar flashes on mouse-to-top.
+      controlcenter = {
+        Sound = false;
+        Bluetooth = false;
+        AirDrop = false;
+        Display = false;
+        FocusModes = false;
+        NowPlaying = false;
+      };
+      # Sequoia/Tahoe native tiling fights AeroSpace.
+      WindowManager = {
+        EnableTilingByEdgeDrag = false;
+        EnableTopTilingByEdgeDrag = false;
+        EnableTilingOptionAccelerator = false;
+        EnableTiledWindowMargins = false;
       };
       LaunchServices = { LSQuarantine = false; };
       trackpad = {
@@ -79,7 +113,7 @@
         expose-animation-duration = 0.15;
         show-recents = false;
         showhidden = true;
-        persistent-apps = [ "/Applications/Arc.app" ];
+        persistent-apps = [ "/Applications/Brave Browser.app" ];
         tilesize = 40;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
@@ -115,6 +149,7 @@
   homebrew = {
     enable = true;
     brews = [
+      "container"
       "hcloud"
       "hudochenkov/sshpass/sshpass"
     ];
@@ -123,12 +158,15 @@
       "anki"
       "brave-browser"
       "discord"
-      "dozer"
       "raycast"
       # "android-platform-tools"
       # "android-studio"
       "gcloud-cli"
       "zed"
+      # Font cask (not the formulae) — Homebrew bottles for sketchybar /
+      # borders fail to build on macOS 27 without Xcode 27 CLT, so those
+      # binaries come from nixpkgs instead.
+      "font-sketchybar-app-font"
     ];
     taps = [ "nikitabobko/tap" "hudochenkov/sshpass" ];
     onActivation.cleanup = "check";

@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#
+# skills-sync — bring every harness's global skills up to date from the personal catalogue.
+#
+# The catalogue is a manifest, not a repository: `skills_scope: global` sends each declared skill
+# to `~/.agents/skills` (zed) and `~/.claude/skills` (claude-code), and records what it delivered
+# beside the manifest. No `--target` is needed — a global catalogue defaults to every harness,
+# because its `default_target` names the instructions file rather than a skill directory.
+#
+#   skills-sync              deliver, and report per harness
+#   skills-sync --prune      also remove a skill dropped from the catalogue
+#   skills-sync --offline    answer from the skill-store cache, with no network
+#
+# Anything else is passed through to `playbook skills sync`.
+#
+# To check without writing anything:
+#
+#   playbook skills check --manifest ~/code/DamonOehlman/fleet/personal
+#
+# `playbook` comes from the devshell, so run this from a repository, or install it with
+# `nix profile install`. That is the copy defrag-nix pins, so a change to the composer itself
+# reaches this command only after that pin is bumped — `playbook root` says which copy answered.
+# Set PLAYBOOK_PERSONAL if the catalogue is not where it usually is.
+
+set -euo pipefail
+
+manifest="${PLAYBOOK_PERSONAL:-$HOME/code/DamonOehlman/fleet/personal}"
+
+usage() {
+  cat <<'EOF'
+usage: skills-sync [--prune] [--offline] [--target <t>[,<t>...|all]]
+
+  --prune      remove a delivered skill the catalogue no longer declares
+  --offline    use the skill-store cache; fail rather than fetch
+  --target     restrict to one or more harnesses (default: every one that has a directory)
+
+Delivers into ~/.agents/skills and ~/.claude/skills, and writes .playbook/skills.lock beside the
+catalogue. Pass --prune only after removing a skill from `skills:` on purpose.
+EOF
+}
+
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+esac
+
+if ! command -v playbook >/dev/null 2>&1; then
+  echo "skills-sync: playbook is not on PATH — it comes from the devshell" >&2
+  exit 1
+fi
+
+# `playbook skills sync` calls the store by name. Checked here rather than left to the failure
+# inside the composer, so the message names the binary that is missing.
+if ! command -v skill-store >/dev/null 2>&1 && [ -z "${SKILL_STORE:-}" ]; then
+  echo "skills-sync: skill-store is not on PATH — it comes from the devshell too" >&2
+  echo "skills-sync: or set SKILL_STORE to its path" >&2
+  exit 1
+fi
+
+if [ ! -f "$manifest/.playbook/project.conf" ]; then
+  echo "skills-sync: no catalogue at $manifest/.playbook/project.conf" >&2
+  echo "skills-sync: set PLAYBOOK_PERSONAL to the directory holding it" >&2
+  exit 1
+fi
+
+exec playbook skills sync --manifest "$manifest" "$@"
