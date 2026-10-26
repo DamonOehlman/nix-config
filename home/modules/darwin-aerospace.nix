@@ -246,7 +246,7 @@
     # carrying one of those markers, so an interactive run, or a normal app
     # with the word in a filename, stays where it is.
     [[on-window-detected]]
-    if = 'test %{window-title} ~= \[(capture|soak)\] && test %{app-bundle-id} = NULL-APP-BUNDLE-ID'
+    if = 'test %{app-bundle-id} = NULL-APP-BUNDLE-ID && (test %{window-title} ~= capture || test %{window-title} ~= soak)'
     run = ['layout floating', 'exec-and-forget aerospace-park-capture "$AEROSPACE_WINDOW_ID"']
   '';
 
