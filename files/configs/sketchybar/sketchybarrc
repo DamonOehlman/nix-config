@@ -112,6 +112,21 @@ sketchybar --add item clock right \
     update_freq=10 \
     script="$PLUGIN_DIR/clock.sh"
 
+# Mirrors the menu bar's "Stop Recording" control, which SketchyBar covers.
+# macOS starts the Screenshot toolbar's recording pre-roll as soon as the
+# toolbar opens in video mode, so this appears whenever there is a recording
+# to stop — the same condition as the native item.
+sketchybar --add item recording right \
+  --set recording \
+    drawing=off \
+    icon="󰓛" \
+    icon.color=$RED \
+    label="REC" \
+    label.color=$RED \
+    update_freq=2 \
+    script="$PLUGIN_DIR/recording.sh" \
+    click_script="$PLUGIN_DIR/recording_stop.sh"
+
 sketchybar --add item battery right \
   --subscribe battery system_woke power_source_change \
   --set battery \
